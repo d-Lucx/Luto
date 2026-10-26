@@ -89,3 +89,10 @@ Comprehensive engineering documentation and seed data are maintained in the [`do
 
 Universal culinary specifications and schemas developed for the Luto Open Culinary Platform.
 Repository: [https://github.com/d-Lucx/Luto](https://github.com/d-Lucx/Luto)
+
+## Mobile implementation
+
+The Expo client lives in [`apps/mobile`](apps/mobile/README.md). It includes
+WatermelonDB models, a local pantry screen, and the tested pantry evaluation
+engine. See its README for setup, current verification limits, and remaining
+sync/media work.

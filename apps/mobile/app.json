@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "Luto",
+    "slug": "luto",
+    "scheme": "luto",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "jsEngine": "hermes",
+    "newArchEnabled": false,
+    "ios": { "bundleIdentifier": "com.luto.app", "supportsTablet": true },
+    "android": { "package": "com.luto.app" },
+    "plugins": ["expo-router", "./plugins/withWatermelonDB"]
+  }
+}
