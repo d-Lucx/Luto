@@ -1,0 +1,336 @@
+{
+  "version": "1.0.0",
+  "total_entries": 32,
+  "description": "Standardized hierarchical kitchen equipment dictionary categorizing essential everyday equipment vs. specialized culinary tools, with common home kitchen workarounds.",
+  "categories": [
+    "cookware",
+    "bakeware",
+    "knives_cutlery",
+    "prep_tools",
+    "measuring",
+    "appliances",
+    "utensils"
+  ],
+  "equipment": [
+    {
+      "id": "eq_chefs_knife",
+      "canonical_name": "chef_knife",
+      "display_name": "Chef's Knife (8-inch / 20cm)",
+      "category": "knives_cutlery",
+      "is_essential": true,
+      "icon_name": "knife-kitchen",
+      "description": "The primary workhorse knife for 90% of prep tasks: chopping, slicing, dicing, and mincing.",
+      "common_alternatives": ["Santoku knife", "Utility knife (for small tasks)"]
+    },
+    {
+      "id": "eq_paring_knife",
+      "canonical_name": "paring_knife",
+      "display_name": "Paring Knife (3.5-inch)",
+      "category": "knives_cutlery",
+      "is_essential": true,
+      "icon_name": "knife-small",
+      "description": "Short precision blade designed for peeling, trimming, hulling strawberries, and delicate hand-held knife work.",
+      "common_alternatives": ["Small utility knife", "Vegetable peeler"]
+    },
+    {
+      "id": "eq_serrated_bread_knife",
+      "canonical_name": "serrated_knife",
+      "display_name": "Serrated Bread Knife (9-10 inch)",
+      "category": "knives_cutlery",
+      "is_essential": false,
+      "icon_name": "knife-serrated",
+      "description": "Toothed blade for slicing crusty artisanal bread, soft tomatoes, and delicate layer cakes without crushing.",
+      "common_alternatives": ["Very sharp chef knife with gentle sawing motion"]
+    },
+    {
+      "id": "eq_cutting_board_large",
+      "canonical_name": "cutting_board_large",
+      "display_name": "Large Cutting Board (Wood or High-Density Poly)",
+      "category": "prep_tools",
+      "is_essential": true,
+      "icon_name": "cutting-board",
+      "description": "Spacious non-slip food preparation surface (minimum 12x18 inches) to ensure safe, stable knife work.",
+      "common_alternatives": ["Any clean, level wooden or BPA-free composite board"]
+    },
+    {
+      "id": "eq_skillet_stainless_steel",
+      "canonical_name": "skillet_stainless_steel_12in",
+      "display_name": "12-Inch Stainless Steel Skillet",
+      "category": "cookware",
+      "is_essential": true,
+      "icon_name": "pan-frying",
+      "description": "High-heat cooking pan ideal for searing proteins, creating fond, deglazing pan sauces, and sautéing.",
+      "common_alternatives": ["Cast iron skillet", "Anodized aluminum sauté pan"]
+    },
+    {
+      "id": "eq_skillet_nonstick",
+      "canonical_name": "skillet_nonstick_10in",
+      "display_name": "10-Inch Nonstick Skillet",
+      "category": "cookware",
+      "is_essential": true,
+      "icon_name": "pan-egg",
+      "description": "Slick surface pan for low-to-medium heat cooking of delicate proteins: scrambled eggs, omelets, and flaky fish fillets.",
+      "common_alternatives": ["Well-seasoned cast iron", "Carbon steel skillet"]
+    },
+    {
+      "id": "eq_cast_iron_skillet",
+      "canonical_name": "cast_iron_skillet_12in",
+      "display_name": "12-Inch Cast Iron Skillet",
+      "category": "cookware",
+      "is_essential": false,
+      "icon_name": "pan-cast-iron",
+      "description": "Heavy thermal mass pan capable of retaining massive heat for deep crust searing, cornbread baking, and stovetop-to-oven transitions.",
+      "common_alternatives": ["Stainless steel skillet", "Enameled Dutch oven"]
+    },
+    {
+      "id": "eq_dutch_oven",
+      "canonical_name": "enameled_dutch_oven",
+      "display_name": "Enameled Cast Iron Dutch Oven (5.5 - 6 Quart)",
+      "category": "cookware",
+      "is_essential": false,
+      "icon_name": "pot-dutch-oven",
+      "description": "Heavy lidded pot providing even radiative heat for low-and-slow braising, stews, deep-frying, and baking sourdough bread.",
+      "common_alternatives": ["Heavy-bottomed stockpot with tight-fitting foil seal", "Slow cooker"]
+    },
+    {
+      "id": "eq_saucepan_medium",
+      "canonical_name": "saucepan_3qt",
+      "display_name": "3-Quart Saucepan with Lid",
+      "category": "cookware",
+      "is_essential": true,
+      "icon_name": "pot-saucepan",
+      "description": "Everyday pot for simmering grains, boiling rice, making caramel, reducing tomato sauces, and reheating soups.",
+      "common_alternatives": ["Small stockpot", "Sauté pan with high sides"]
+    },
+    {
+      "id": "eq_stockpot_large",
+      "canonical_name": "stockpot_8qt",
+      "display_name": "8-12 Quart Large Stockpot",
+      "category": "cookware",
+      "is_essential": true,
+      "icon_name": "pot-large",
+      "description": "High-capacity deep vessel for boiling pasta in copious salted water, simmering bone broths, and steaming seafood.",
+      "common_alternatives": ["Dutch oven (for half-batches)", "Pressure cooker"]
+    },
+    {
+      "id": "eq_rimmed_baking_sheet",
+      "canonical_name": "half_sheet_pan",
+      "display_name": "Half-Sheet Baking Pan (Rimmed 18x13 inch)",
+      "category": "bakeware",
+      "is_essential": true,
+      "icon_name": "sheet-pan",
+      "description": "Heavy 18-gauge aluminum sheet pan for roasting high-temperature vegetables, baking cookies, and sheet-pan dinners.",
+      "common_alternatives": ["Roasting pan", "Pyrex glass baking dish (caution at 450°F+)"]
+    },
+    {
+      "id": "eq_wire_cooling_rack",
+      "canonical_name": "wire_cooling_rack",
+      "display_name": "Stainless Steel Wire Rack (Oven-Safe)",
+      "category": "bakeware",
+      "is_essential": false,
+      "icon_name": "grid-rack",
+      "description": "Elevated grid that fits inside a sheet pan to allow 360-degree hot air circulation under roasts and crisp chicken wings, and cool baked goods.",
+      "common_alternatives": ["Coiled aluminum foil snakes beneath meats"]
+    },
+    {
+      "id": "eq_mixing_bowls_set",
+      "canonical_name": "mixing_bowls_nested",
+      "display_name": "Set of 3 Stainless Steel Mixing Bowls",
+      "category": "prep_tools",
+      "is_essential": true,
+      "icon_name": "bowl-mix",
+      "description": "Lightweight, non-reactive nested bowls (1.5qt, 3qt, 5qt) for whisking vinaigrettes, holding mise en place, and proofing dough.",
+      "common_alternatives": ["Glass Pyrex bowls", "Ceramic soup bowls"]
+    },
+    {
+      "id": "eq_colander_fine_mesh",
+      "canonical_name": "fine_mesh_sieve_strainer",
+      "display_name": "Fine-Mesh Sieve / Strainer (8-inch)",
+      "category": "prep_tools",
+      "is_essential": true,
+      "icon_name": "strainer-mesh",
+      "description": "Multipurpose wire mesh for draining pasta, sifting flour, rinsing quinoa, and straining silky smooth pan sauces.",
+      "common_alternatives": ["Perforated colander", "Slotted spoon"]
+    },
+    {
+      "id": "eq_tongs_locking",
+      "canonical_name": "locking_kitchen_tongs_12in",
+      "display_name": "Stainless Steel Locking Tongs (12-inch)",
+      "category": "utensils",
+      "is_essential": true,
+      "icon_name": "tongs",
+      "description": "An extension of the cook's hand: grabbing, turning hot meats, tossing pasta in sauce, and safely retrieving items from boiling water.",
+      "common_alternatives": ["Wooden cooking chopsticks", "Fish spatula"]
+    },
+    {
+      "id": "eq_fish_spatula",
+      "canonical_name": "slotted_fish_spatula",
+      "display_name": "Slotted Flexible Metal Fish Spatula",
+      "category": "utensils",
+      "is_essential": true,
+      "icon_name": "spatula-metal",
+      "description": "Thin, razor-flexible beveled metal turner that easily glides under delicate fish fillets, burgers, and fried eggs without sticking.",
+      "common_alternatives": ["Standard silicone or plastic spatula"]
+    },
+    {
+      "id": "eq_silicone_spatula",
+      "canonical_name": "heatproof_silicone_spatula",
+      "display_name": "Heat-Resistant Silicone Spatula",
+      "category": "utensils",
+      "is_essential": true,
+      "icon_name": "spatula-rubber",
+      "description": "Flexible heat-resistant blade (up to 500°F) for folding batters, scraping every drop of sauce from pans, and making creamy custards.",
+      "common_alternatives": ["Wooden spoon"]
+    },
+    {
+      "id": "eq_balloon_whisk",
+      "canonical_name": "balloon_whisk_11in",
+      "display_name": "11-Inch Stainless Steel Whisk",
+      "category": "utensils",
+      "is_essential": true,
+      "icon_name": "whisk",
+      "description": "Flexible wire loops for incorporating air into egg whites, emulsifying dressings, and creating smooth, lump-free roux and gravies.",
+      "common_alternatives": ["Table fork (for small dressings)", "Electric hand mixer"]
+    },
+    {
+      "id": "eq_wooden_spoon",
+      "canonical_name": "wooden_corner_spoon",
+      "display_name": "Flat-Edge Wooden Spoon / Spatula",
+      "category": "utensils",
+      "is_essential": true,
+      "icon_name": "spoon-wooden",
+      "description": "Rigid, non-reactive tool for scraping flavorful browned bits (fond) from the bottom of pans without scratching.",
+      "common_alternatives": ["Heat-proof silicone scraper", "Bamboo paddle"]
+    },
+    {
+      "id": "eq_digital_food_scale",
+      "canonical_name": "digital_kitchen_scale_1g",
+      "display_name": "Digital Kitchen Gram Scale (1g / 0.05oz precision)",
+      "category": "measuring",
+      "is_essential": true,
+      "icon_name": "scale-digital",
+      "description": "The golden standard for accurate baking and cooking consistency. Eliminates cup volume packing variations.",
+      "common_alternatives": ["Volumetric measuring cups and spoons"]
+    },
+    {
+      "id": "eq_instant_read_thermometer",
+      "canonical_name": "digital_instant_read_thermometer",
+      "display_name": "Digital Instant-Read Meat Thermometer (2-3s response)",
+      "category": "measuring",
+      "is_essential": true,
+      "icon_name": "thermometer",
+      "description": "Precision probe for guaranteeing perfect food safety and doneness: medium-rare steaks (130°F), poultry (165°F), and bread (200°F).",
+      "common_alternatives": ["Visual poke/cutting test (far less reliable)"]
+    },
+    {
+      "id": "eq_measuring_cups_spoons",
+      "canonical_name": "measuring_cups_and_spoons_set",
+      "display_name": "Stainless Steel Dry Measuring Cups & Spoons",
+      "category": "measuring",
+      "is_essential": true,
+      "icon_name": "measuring-cups",
+      "description": "Standard standard units (1 cup, 1/2, 1/3, 1/4; 1 tbsp, 1 tsp, 1/2 tsp, 1/4 tsp) for quick spice and liquid dosing.",
+      "common_alternatives": ["Digital scale with density conversion"]
+    },
+    {
+      "id": "eq_liquid_measuring_cup",
+      "canonical_name": "glass_liquid_measuring_cup_2cup",
+      "display_name": "2-Cup Tempered Glass Liquid Measuring Cup",
+      "category": "measuring",
+      "is_essential": true,
+      "icon_name": "cup-liquid",
+      "description": "Clear vessel with spout and meniscus viewing lines for pouring broths, milk, water, and warm oils without spilling.",
+      "common_alternatives": ["Dry measuring cups", "Digital scale"]
+    },
+    {
+      "id": "eq_microplane_zester",
+      "canonical_name": "microplane_rasp_grater",
+      "display_name": "Microplane Rasp Zester & Fine Grater",
+      "category": "prep_tools",
+      "is_essential": false,
+      "icon_name": "grater-rasp",
+      "description": "Photo-etched teeth that effortlessly zest citrus skins without bitter white pith, and pulverize hard garlic and parmesan into snow.",
+      "common_alternatives": ["Small side of box grater", "Fine chef knife mince"]
+    },
+    {
+      "id": "eq_box_grater",
+      "canonical_name": "four_sided_box_grater",
+      "display_name": "4-Sided Stainless Steel Box Grater",
+      "category": "prep_tools",
+      "is_essential": true,
+      "icon_name": "grater-box",
+      "description": "Coarse shredding for cheddar, mozzarella, potatoes (hash browns), and carrots.",
+      "common_alternatives": ["Food processor with grating disc"]
+    },
+    {
+      "id": "eq_vegetable_peeler_y",
+      "canonical_name": "y_peeler_swivel",
+      "display_name": "Ergonomic Y-Shaped Vegetable Peeler",
+      "category": "prep_tools",
+      "is_essential": true,
+      "icon_name": "peeler",
+      "description": "High-leverage razor carbon steel or ceramic blade for peeling root vegetables, shaving parmesan ribbons, and citrus peels.",
+      "common_alternatives": ["Paring knife"]
+    },
+    {
+      "id": "eq_immersion_blender",
+      "canonical_name": "immersion_stick_blender",
+      "display_name": "Variable Speed Immersion (Stick) Blender",
+      "category": "appliances",
+      "is_essential": false,
+      "icon_name": "blender-stick",
+      "description": "Blends hot soups directly in the cooking pot without dangerous transfers, and whips foolproof 30-second mayonnaise.",
+      "common_alternatives": ["Countertop blender", "Food mill", "Potato masher"]
+    },
+    {
+      "id": "eq_food_processor",
+      "canonical_name": "food_processor_14cup",
+      "display_name": "14-Cup Kitchen Food Processor",
+      "category": "appliances",
+      "is_essential": false,
+      "icon_name": "appliance-processor",
+      "description": "Rapid chopping, pulse pureeing, pastry crust cutting, and mass shredding/slicing via motorized discs.",
+      "common_alternatives": ["Chef knife proficiency", "Box grater + Mortar and pestle"]
+    },
+    {
+      "id": "eq_high_speed_blender",
+      "canonical_name": "high_speed_countertop_blender",
+      "display_name": "High-Speed Countertop Blender (Vitamix / Ninja)",
+      "category": "appliances",
+      "is_essential": false,
+      "icon_name": "blender-countertop",
+      "description": "High-RPM vortex that pulverizes fibers and seeds into completely silky veloutés, smoothie bowls, and nut butters.",
+      "common_alternatives": ["Immersion blender", "Fine-mesh sieve pass"]
+    },
+    {
+      "id": "eq_mortar_and_pestle",
+      "canonical_name": "granite_mortar_and_pestle",
+      "display_name": "Heavy Granite Mortar and Pestle (6-inch)",
+      "category": "prep_tools",
+      "is_essential": false,
+      "icon_name": "mortar-pestle",
+      "description": "Crushes cell walls of garlic, herbs, and spices simultaneously, releasing volatile aromatic oils that spinning metal blades merely slice.",
+      "common_alternatives": ["Spice grinder", "Heavy bottom skillet crush in zip bag"]
+    },
+    {
+      "id": "eq_sous_vide_circulator",
+      "canonical_name": "sous_vide_immersion_circulator",
+      "display_name": "Sous Vide Precision Immersion Circulator",
+      "category": "appliances",
+      "is_essential": false,
+      "icon_name": "device-circulator",
+      "description": "Maintains temperature water baths to within 0.1°C for edge-to-edge perfect protein doneness and gentle infusion.",
+      "common_alternatives": ["Gentle stove poaching with probe thermometer", "Low-temperature oven"]
+    },
+    {
+      "id": "eq_kitchen_shears",
+      "canonical_name": "heavy_duty_kitchen_shears",
+      "display_name": "Heavy-Duty Take-Apart Kitchen Shears",
+      "category": "prep_tools",
+      "is_essential": true,
+      "icon_name": "shears",
+      "description": "Snipping fresh herbs, cutting twine, opening food packaging, and spatchcocking whole poultry backbones cleanly.",
+      "common_alternatives": ["Sturdy chef knife"]
+    }
+  ]
+}

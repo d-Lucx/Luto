@@ -1,0 +1,444 @@
+{
+  "version": "1.0.0",
+  "total_entries": 20,
+  "description": "Standardized core culinary techniques catalog structured for in-app micro-tutorials, visual looping previews, and step-by-step cooking mode callouts.",
+  "techniques": [
+    {
+      "id": "tech_searing_protein",
+      "canonical_slug": "searing_protein",
+      "name": "Pan Searing Protein",
+      "category": "dry_heat",
+      "difficulty": "beginner",
+      "summary": "Cooking protein at high temperature in a hot pan to trigger the Maillard reaction, developing a deeply flavorful, caramelized brown crust.",
+      "key_tips": [
+        "Thoroughly pat the protein completely dry with paper towels; surface moisture causes steaming rather than browning.",
+        "Ensure the pan and oil are shimmering hot before the protein touches the metal.",
+        "Do not move or poke the meat for the first 3-5 minutes; it will naturally release from the pan once the crust forms."
+      ],
+      "common_mistakes": [
+        "Crowding the pan, which drops thermal temperature and traps steam.",
+        "Flipping prematurely when meat is still adhering to the pan.",
+        "Using low-smoke-point fats (like extra virgin olive oil or unclarified butter) at scorching heat."
+      ],
+      "micro_tutorial_spec": {
+        "duration_seconds": 6,
+        "visual_cues": "Close-up slow motion of dried steak entering shimmering oil; golden crust formation; natural clean release with tongs.",
+        "looping_style": "seamless_pingpong"
+      }
+    },
+    {
+      "id": "tech_deglazing",
+      "canonical_slug": "deglazing_pan",
+      "name": "Deglazing a Pan",
+      "category": "sauces_emulsions",
+      "difficulty": "beginner",
+      "summary": "Pouring a cool liquid (wine, broth, vinegar, or water) into a hot pan after searing to dissolve and incorporate the caramelized browned food particles (fond) stuck to the bottom.",
+      "key_tips": [
+        "Pour liquid in immediately after removing meat while pan retains thermal heat.",
+        "Use a flat-edged wooden spoon to aggressively scrape the bottom until smooth.",
+        "Reduce liquid by at least 50% to concentrate sweetness and cook off harsh alcohol fumes."
+      ],
+      "common_mistakes": [
+        "Deglazing a pan with burnt (blackened) fond, which infuses an acrid, bitter taste into the sauce.",
+        "Adding liquid when the pan has cooled down completely."
+      ],
+      "micro_tutorial_spec": {
+        "duration_seconds": 5,
+        "visual_cues": "Wine hitting hot skillet; sudden steam burst; flat wooden spoon scraping fond into a rich amber liquid.",
+        "looping_style": "infinite_loop"
+      }
+    },
+    {
+      "id": "tech_braising",
+      "canonical_slug": "braising",
+      "name": "Braising (Low & Slow)",
+      "category": "combination",
+      "difficulty": "intermediate",
+      "summary": "A combination cooking method where meat/vegetables are first seared at high heat, then slowly simmered partially submerged in flavorful liquid in a covered vessel at low heat.",
+      "key_tips": [
+        "Liquid should come roughly 1/3 to 1/2 way up the side of the meat, never fully submerged.",
+        "Keep the oven temperature low (300°F / 150°C) to gently melt tough collagen into succulent gelatin without drying out muscle fibers.",
+        "Keep lid tightly sealed to prevent steam evaporation."
+      ],
+      "common_mistakes": [
+        "Boiling too rapidly, which toughens the protein and turns sauce greasy.",
+        "Skipping the initial deep browning sear."
+      ],
+      "micro_tutorial_spec": {
+        "duration_seconds": 7,
+        "visual_cues": "Lid lifting off Dutch oven; gentle slow bubbles breaking around tender braised short ribs; fork-tender pull.",
+        "looping_style": "seamless_loop"
+      }
+    },
+    {
+      "id": "tech_knife_julienne",
+      "canonical_slug": "julienne_cut",
+      "name": "Julienne Cut (Matchstick)",
+      "category": "knife_skills",
+      "difficulty": "intermediate",
+      "summary": "Precision knife technique that cuts firm vegetables into uniform matchsticks measuring approximately 1/8 inch x 1/8 inch x 2 inches (3mm x 3mm x 5cm).",
+      "key_tips": [
+        "Square off the vegetable first by cutting a thin slice off one side so it rests stable without rolling.",
+        "Cut into 1/8-inch thick planks, stack 2-3 planks, and slice lengthwise into 1/8-inch sticks.",
+        "Always curl non-knife hand fingertips inward like a claw against the blade face."
+      ],
+      "common_mistakes": [
+        "Attempting to cut round vegetables without squaring a flat base first.",
+        "Uneven stick thicknesses causing erratic cooking rates in stir-fries."
+      ],
+      "micro_tutorial_spec": {
+        "duration_seconds": 6,
+        "visual_cues": "Claw grip demonstration; fluid rhythmic knife slice through carrot planks; perfect matchsticks fanning out.",
+        "looping_style": "seamless_loop"
+      }
+    },
+    {
+      "id": "tech_knife_chiffonade",
+      "canonical_slug": "chiffonade",
+      "name": "Chiffonade (Herb Ribbons)",
+      "category": "knife_skills",
+      "difficulty": "beginner",
+      "summary": "Slicing flat leafy greens or herbs (such as fresh basil, sage, or mint) into thin, delicate ribbons.",
+      "key_tips": [
+        "Stack 6-8 washed and thoroughly dried leaves from largest to smallest.",
+        "Roll the leaf stack tightly like a cigar.",
+        "Slice crosswise into thin 1/16-inch ribbons using a smooth single-pass slicing motion."
+      ],
+      "common_mistakes": [
+        "Using a dull knife or pressing straight down, which bruises and blackens the cut edges of delicate basil leaves.",
+        "Chiffonading wet herbs, resulting in clumps."
+      ],
+      "micro_tutorial_spec": {
+        "duration_seconds": 5,
+        "visual_cues": "Tightly rolled basil leaves; clean crosswise strokes; green ribbons separating effortlessly.",
+        "looping_style": "infinite_loop"
+      }
+    },
+    {
+      "id": "tech_emulsification",
+      "canonical_slug": "emulsification",
+      "name": "Emulsification (Sauce Binding)",
+      "category": "sauces_emulsions",
+      "difficulty": "intermediate",
+      "summary": "Forcing two naturally unmixable liquids (such as oil and water or vinegar) to combine into a stable, silky uniform suspension using a binding agent like egg yolk, mustard, or honey.",
+      "key_tips": [
+        "Add the oil very slowly—drop by drop initially—while whisking vigorously until the emulsion takes hold.",
+        "Ensure base ingredients (egg yolk, acid) are at room temperature.",
+        "If an emulsion breaks (separates into greasy curdles), whisk 1 tsp warm water in a clean bowl and slowly whisk the broken sauce into it."
+      ],
+      "common_mistakes": [
+        "Pouring oil too quickly in a steady stream before the initial emulsion matrix forms.",
+        "Using ice-cold liquids which inhibit surfactant binding."
+      ],
+      "micro_tutorial_spec": {
+        "duration_seconds": 7,
+        "visual_cues": "Thin stream of oil drizzling into egg yolk and Dijon; rapid whisking; glossy, thick mayonnaise forming.",
+        "looping_style": "seamless_loop"
+      }
+    },
+    {
+      "id": "tech_tempering_dairy_eggs",
+      "canonical_slug": "tempering_liquids",
+      "name": "Tempering Delicate Ingredients",
+      "category": "sauces_emulsions",
+      "difficulty": "intermediate",
+      "summary": "Gently raising the temperature of cold, heat-sensitive ingredients (such as beaten eggs, yogurt, or sour cream) before adding them to hot mixtures to prevent curdling or scrambling.",
+      "key_tips": [
+        "Slowly ladle a small stream of the hot soup/broth into the eggs/dairy while constantly whisking.",
+        "Once the egg/dairy mixture is lukewarm to warm, pour it steadily back into the main pot while stirring.",
+        "Keep main pot at low heat; do not boil after incorporating tempered eggs."
+      ],
+      "common_mistakes": [
+        "Dumping cold egg yolks or sour cream directly into boiling soup.",
+        "Failing to whisk continuously during the tempering pour."
+      ],
+      "micro_tutorial_spec": {
+        "duration_seconds": 6,
+        "visual_cues": "Ladle of hot broth poured into glass bowl of whisked eggs; continuous whisk; warmed mixture poured back into saucepan.",
+        "looping_style": "infinite_loop"
+      }
+    },
+    {
+      "id": "tech_blanch_and_shock",
+      "canonical_slug": "blanch_and_shock",
+      "name": "Blanching and Shocking",
+      "category": "moist_heat",
+      "difficulty": "beginner",
+      "summary": "Boiling vegetables briefly in heavily salted water, then immediately plunging them into an ice water bath to stop the cooking instantly.",
+      "key_tips": [
+        "Use abundant rolling boiling water (at least 4 quarts per pound of vegetables) heavily salted like sea water.",
+        "Boil only until crisp-tender (60-90 seconds for green beans, asparagus, or peas).",
+        "Keep the ice bath properly iced so it remains near 32°F (0°C)."
+      ],
+      "common_mistakes": [
+        "Leaving vegetables in the ice bath too long after they have cooled, which leaches flavor and nutrients.",
+        "Inadequate ice volume, which warms up into a lukewarm bath that continues overcooking."
+      ],
+      "micro_tutorial_spec": {
+        "duration_seconds": 6,
+        "visual_cues": "Vibrant green asparagus lifted with tongs from boiling water; submerged in clear ice bath; brilliant color lock.",
+        "looping_style": "seamless_loop"
+      }
+    },
+    {
+      "id": "tech_sweating_aromatics",
+      "canonical_slug": "sweating_aromatics",
+      "name": "Sweating Aromatics",
+      "category": "moist_heat",
+      "difficulty": "beginner",
+      "summary": "Cooking chopped vegetables (onions, celery, carrots, leeks) in fat over low heat with salt, softening them and releasing their natural moisture without browning.",
+      "key_tips": [
+        "Keep heat strictly on low to medium-low.",
+        "Add fine salt immediately to draw out cellular moisture via osmosis.",
+        "Cover pan with lid or parchment paper cartouche to trap steam and encourage even softening."
+      ],
+      "common_mistakes": [
+        "Allowing heat to climb until vegetables brown, which imparts caramelized notes rather than sweet, translucent base aromatics."
+      ],
+      "micro_tutorial_spec": {
+        "duration_seconds": 5,
+        "visual_cues": "Translucent diced onions simmering gently in butter; zero golden browning; soft glossy texture.",
+        "looping_style": "infinite_loop"
+      }
+    },
+    {
+      "id": "tech_folding_batter",
+      "canonical_slug": "folding_batter",
+      "name": "Folding Delicate Batters",
+      "category": "baking_pastry",
+      "difficulty": "intermediate",
+      "summary": "A gentle motion used to incorporate a light, airy ingredient (whipped egg whites or whipped cream) into a heavier batter without deflating the trapped air bubbles.",
+      "key_tips": [
+        "Use a flexible rubber spatula with a broad head.",
+        "Cut vertically down through the center of the mixture, sweep across the bottom of the bowl, and lift up along the side, rotating the bowl 90 degrees.",
+        "Stir in one-third of the light mixture first to lighten the base before gently folding the rest."
+      ],
+      "common_mistakes": [
+        "Vigorous circular stirring, which collapses delicate foam bubbles and produces dense, flat cakes.",
+        "Under-folding leaving large unmixed streaks of raw egg white."
+      ],
+      "micro_tutorial_spec": {
+        "duration_seconds": 6,
+        "visual_cues": "Spatula cutting down center of chocolate batter; sweeping under whipped egg whites and rolling over; airy texture maintained.",
+        "looping_style": "seamless_loop"
+      }
+    },
+    {
+      "id": "tech_resting_meat",
+      "canonical_slug": "resting_meat",
+      "name": "Resting Cooked Meat",
+      "category": "prep_finishing",
+      "difficulty": "beginner",
+      "summary": "Allowing cooked meat to sit undisturbed on a warm cutting board before slicing, allowing muscle fibers to relax and redistribute moisture throughout.",
+      "key_tips": [
+        "Rest steaks for 5-8 minutes; whole roasted chickens for 15 minutes; large roasts for 20-30 minutes.",
+        "Tent loosely with foil—never wrap tightly, which creates condensation and softens crisp skin or sear.",
+        "Save all residual cutting board juices and pour back over the sliced meat or whisk into pan gravy."
+      ],
+      "common_mistakes": [
+        "Slicing meat straight off the grill or pan, causing high-pressure juices to flood out, leaving meat dry."
+      ],
+      "micro_tutorial_spec": {
+        "duration_seconds": 5,
+        "visual_cues": "Juicy steak resting on wooden board; slice revealing edge-to-edge pink interior with juices retained inside cell walls.",
+        "looping_style": "infinite_loop"
+      }
+    },
+    {
+      "id": "tech_montage_au_beurre",
+      "canonical_slug": "monter_au_beurre",
+      "name": "Monter au Beurre (Pan Sauce Gloss)",
+      "category": "sauces_emulsions",
+      "difficulty": "intermediate",
+      "summary": "Whisking chilled cubes of unsalted butter into a simmering, reduced pan sauce off the heat to create a glossy, velvety consistency and rich mouthfeel.",
+      "key_tips": [
+        "Butter must be straight from the refrigerator (ice cold) and cubed.",
+        "Remove the pan from direct heat; residual heat melts butter slowly, maintaining the natural dairy emulsion.",
+        "Swirl pan constantly in a circular motion until butter is fully emulsified."
+      ],
+      "common_mistakes": [
+        "Boiling the sauce while adding butter, which breaks the emulsion into a pool of yellow clarified oil."
+      ],
+      "micro_tutorial_spec": {
+        "duration_seconds": 5,
+        "visual_cues": "Cold cube of butter dropped into dark wine reduction off heat; pan swirling; sauce transforming to high-gloss sheen.",
+        "looping_style": "seamless_loop"
+      }
+    },
+    {
+      "id": "tech_poaching",
+      "canonical_slug": "poaching",
+      "name": "Gentle Poaching",
+      "category": "moist_heat",
+      "difficulty": "beginner",
+      "summary": "Submerging delicate foods (eggs, fish, pears) in liquid maintained at a gentle sub-boil (160°F–180°F / 71°C–82°C) with tiny shivers instead of rolling bubbles.",
+      "key_tips": [
+        "Water should have faint convection currents and tiny bubbles pinned to the bottom of the pot.",
+        "For poached eggs: add 1 tbsp white vinegar, create a gentle vortex in the water, and slip egg from a small ramekin directly into center.",
+        "Use aromatic liquid (court-bouillon or seasoned broth) to infuse flavor."
+      ],
+      "common_mistakes": [
+        "Allowing liquid to reach a rapid boil, which rips delicate egg whites apart and dries out fish proteins."
+      ],
+      "micro_tutorial_spec": {
+        "duration_seconds": 6,
+        "visual_cues": "Gentle water swirl; egg dropping in; whites wrapping neatly around yolk in tranquil simmering water.",
+        "looping_style": "seamless_loop"
+      }
+    },
+    {
+      "id": "tech_dry_brining",
+      "canonical_slug": "dry_brining",
+      "name": "Dry Brining",
+      "category": "prep_finishing",
+      "difficulty": "beginner",
+      "summary": "Salting meat in advance and letting it rest uncovered on a wire rack in the refrigerator for 4 to 24 hours, enhancing juiciness and promoting razor-crisp skin.",
+      "key_tips": [
+        "Use approximately 1/2 tsp kosher salt per pound of meat.",
+        "Rest on an elevated wire cooling rack inside a sheet pan to allow air circulation completely around.",
+        "Do not cover; the dry refrigerator air dehydrates the skin surface for superior Maillard browning."
+      ],
+      "common_mistakes": [
+        "Using fine table salt at the same volume as kosher salt, which severely oversalts the meat.",
+        "Rinsing the meat after brining (unnecessary and washes away absorbed seasoning)."
+      ],
+      "micro_tutorial_spec": {
+        "duration_seconds": 5,
+        "visual_cues": "Salt crystals dissolving into steak surface; translucent dry skin glistening under cool air.",
+        "looping_style": "infinite_loop"
+      }
+    },
+    {
+      "id": "tech_caramelizing_onions",
+      "canonical_slug": "caramelizing_onions",
+      "name": "True Onion Caramelization",
+      "category": "dry_heat",
+      "difficulty": "intermediate",
+      "summary": "Slowly cooking sliced onions over low-to-medium heat for 40-50 minutes until their natural sugars break down into complex, sweet, deeply golden-brown compounds.",
+      "key_tips": [
+        "Patience is non-negotiable; true caramelization cannot be rushed in 10 minutes without burning.",
+        "Add a pinch of salt initially to draw out water.",
+        "Splash 1-2 tbsp water, wine, or stock whenever the fond on the bottom gets too dark to redistribute sugars."
+      ],
+      "common_mistakes": [
+        "High heat causing onions to char bitter black on tips before interior sugars break down.",
+        "Adding baking soda excessively, which makes onions mushy and chemically alkaline."
+      ],
+      "micro_tutorial_spec": {
+        "duration_seconds": 6,
+        "visual_cues": "Time-lapse transition: raw pale sliced onions -> soft yellow -> golden -> deep mahogany brown onion jam.",
+        "looping_style": "seamless_loop"
+      }
+    },
+    {
+      "id": "tech_blooming_spices",
+      "canonical_slug": "blooming_spices",
+      "name": "Blooming Spices in Fat",
+      "category": "dry_heat",
+      "difficulty": "beginner",
+      "summary": "Frying ground or whole spices in warm oil or ghee for 30–60 seconds, which dissolves and amplifies their fat-soluble aromatic flavor compounds (tadka / tempering).",
+      "key_tips": [
+        "Heat fat over medium-low heat; spices burn easily.",
+        "Add whole seeds (cumin, mustard, coriander) first until they crackle and pop, then ground spices for 15-20 seconds.",
+        "Add wet aromatics (onion, garlic, ginger) or liquids immediately after blooming to arrest spice cooking."
+      ],
+      "common_mistakes": [
+        "Dumping ground spices into boiling water/soup directly without fat blooming, resulting in raw, dusty flavor.",
+        "Burning delicate ground paprika or turmeric into bitter black residue."
+      ],
+      "micro_tutorial_spec": {
+        "duration_seconds": 5,
+        "visual_cues": "Mustard seeds popping in hot ghee; fragrant ground turmeric and cumin blooming with aromatic bubbles.",
+        "looping_style": "seamless_loop"
+      }
+    },
+    {
+      "id": "tech_roux_making",
+      "canonical_slug": "roux_making",
+      "name": "Making a Roux",
+      "category": "sauces_emulsions",
+      "difficulty": "beginner",
+      "summary": "Cooking equal parts by weight of fat (usually butter) and all-purpose flour to eliminate raw flour taste and create the foundational thickening base for mother sauces.",
+      "key_tips": [
+        "White roux (2 min) for Béchamel / mac and cheese.",
+        "Blond roux (4-5 min) for Velouté / chicken pot pie.",
+        "Brown or Dark roux (15-30 min) for Creole and Cajun gumbo.",
+        "Whisk liquid in gradually—hot liquid into warm roux, or cold liquid into hot roux—to prevent lumping."
+      ],
+      "common_mistakes": [
+        "Adding liquid all at once, creating stubborn flour dumplings.",
+        "Under-cooking white roux, resulting in an unpleasant pasty flour flavor."
+      ],
+      "micro_tutorial_spec": {
+        "duration_seconds": 6,
+        "visual_cues": "Melted butter whisking with flour into a foaming paste; transitioning from pale cream to golden blond.",
+        "looping_style": "seamless_loop"
+      }
+    },
+    {
+      "id": "tech_supreme_citrus",
+      "canonical_slug": "supreme_citrus",
+      "name": "Supreming Citrus",
+      "category": "knife_skills",
+      "difficulty": "intermediate",
+      "summary": "Cutting raw citrus fruit segments cleanly away from the bitter peel, white pith, and fibrous membrane walls.",
+      "key_tips": [
+        "Slice off both top and bottom ends of orange/grapefruit so it stands flat.",
+        "Curve your chef knife or paring knife along the contour of the fruit, cutting away skin and all white pith.",
+        "Slice inward on each side of the white dividing membranes to release clean, perfect fruit segments."
+      ],
+      "common_mistakes": [
+        "Leaving patches of bitter white pith on fruit edges.",
+        "Squeezing fruit with excessive hand pressure while cutting."
+      ],
+      "micro_tutorial_spec": {
+        "duration_seconds": 6,
+        "visual_cues": "Curving knife removing skin and pith; precision blade sliding between membrane walls to drop jewel-like segment.",
+        "looping_style": "infinite_loop"
+      }
+    },
+    {
+      "id": "tech_sous_vide_searing",
+      "canonical_slug": "sous_vide_cooking",
+      "name": "Sous Vide & Reverse Sear",
+      "category": "combination",
+      "difficulty": "advanced",
+      "summary": "Cooking vacuum-sealed food in a precisely controlled water bath to the exact desired core temperature, followed by a blazing 60-second sear to develop crust.",
+      "key_tips": [
+        "Ensure airtight vacuum seal so heat transfers uniformly through water immersion.",
+        "Pat exterior bone-dry before the post-bath sear.",
+        "Sear on maximum surface heat for no longer than 45-60 seconds per side to avoid cooking beyond the water bath target."
+      ],
+      "common_mistakes": [
+        "Searing cold or wet meat from the bag without drying, causing gray band overcooking."
+      ],
+      "micro_tutorial_spec": {
+        "duration_seconds": 6,
+        "visual_cues": "Water circulator bath at 54°C (129°F); steak removed from bag, dried, hitting smoking cast iron for rapid sear.",
+        "looping_style": "seamless_loop"
+      }
+    },
+    {
+      "id": "tech_blind_baking",
+      "canonical_slug": "blind_baking",
+      "name": "Blind Baking Pastry Crust",
+      "category": "baking_pastry",
+      "difficulty": "intermediate",
+      "summary": "Pre-baking an empty tart or pie crust before adding wet or unbaked fillings, preventing the bottom crust from turning into a soggy, undercooked mess.",
+      "key_tips": [
+        "Dock (prick) the pastry bottom gently all over with a fork to release trapped air.",
+        "Line with crumpled parchment paper and fill completely to the brim with ceramic pie weights, dried beans, or raw rice.",
+        "Bake until edges set (15 min), then remove weights and bake 5-10 min more to crisp the floor."
+      ],
+      "common_mistakes": [
+        "Skimping on pie weights, which causes crust walls to slump down into the pan.",
+        "Adding weights directly onto raw dough without parchment lining."
+      ],
+      "micro_tutorial_spec": {
+        "duration_seconds": 6,
+        "visual_cues": "Parchment lining fluted tart shell; dried beans poured in to the brim; baked crust revealed crisp and golden.",
+        "looping_style": "seamless_loop"
+      }
+    }
+  ]
+}
