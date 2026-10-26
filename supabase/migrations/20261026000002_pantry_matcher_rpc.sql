@@ -21,6 +21,8 @@ RETURNS TABLE (
     can_cook_now BOOLEAN
 ) AS $$
 BEGIN
+    p_user_ingredient_ids := COALESCE(p_user_ingredient_ids, ARRAY[]::UUID[]);
+
     RETURN QUERY
     WITH recipe_eval AS (
         SELECT 

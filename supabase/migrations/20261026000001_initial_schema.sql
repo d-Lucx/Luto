@@ -17,6 +17,15 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- 2.1 Auth Schema Mock Stub (for isolated PostgreSQL test environments)
+CREATE SCHEMA IF NOT EXISTS auth;
+CREATE TABLE IF NOT EXISTS auth.users (
+    id UUID PRIMARY KEY,
+    email TEXT,
+    raw_user_meta_data JSONB,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- 3. Profiles Table (Linked to Supabase Auth)
 CREATE TABLE IF NOT EXISTS profiles (
     id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
