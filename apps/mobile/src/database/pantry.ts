@@ -1,9 +1,9 @@
 import { Q } from '@nozbe/watermelondb';
 import { database } from './index';
 import { Ingredient, UserPantry, type StorageLocation } from './models';
+import { LOCAL_GUEST_ID } from './constants';
 
-// Guest inventory stays on this device and must never be sent to Supabase.
-export const LOCAL_GUEST_ID = 'local-guest';
+export { LOCAL_GUEST_ID };
 
 export async function setPantryQuantity(
   ingredient: Ingredient,
