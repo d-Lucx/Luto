@@ -178,7 +178,7 @@ export default function CookingModeScreen() {
     );
   }
 
-  if (!recipe || steps.length === 0) {
+  if (!recipe || !currentStep || steps.length === 0) {
     return (
       <SafeAreaView style={styles.loadingContainer}>
         <Text style={styles.errorText}>Recipe steps not found.</Text>
