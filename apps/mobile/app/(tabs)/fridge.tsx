@@ -1,4 +1,6 @@
+import { colors, headingFont } from '../../src/theme';
 import { useMemo, useState } from 'react';
+import { ingredientMatches } from '../../src/engine/ingredientDisplay';
 import { ActivityIndicator, Alert, FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFridge } from '../../src/database/useFridge';
@@ -15,6 +17,7 @@ export default function FridgeScreen() {
   const [search, setSearch] = useState('');
   const [quantity, setQuantity] = useState('1');
   const [selected, setSelected] = useState<Ingredient>();
+  const [unit, setUnit] = useState('g');
   const [location, setLocation] = useState<StorageLocation>('fridge');
   const [showLow, setShowLow] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -36,12 +39,12 @@ export default function FridgeScreen() {
       .sort((a, b) => b.result.matchScore - a.result.matchScore || a.recipe.title.localeCompare(b.recipe.title));
   }, [recipes, requirements, pantry, dictionary, showLow]);
   const suggestions = search.trim() && !selected
-    ? ingredients.filter((item) => item.displayName.toLowerCase().includes(search.trim().toLowerCase())).slice(0, 6) : [];
+    ? ingredients.filter((item) => ingredientMatches(item.displayName, item.canonicalName, search)).slice(0, 6) : [];
 
   async function save(ingredient: Ingredient, amount: number) {
     setSaving(true);
     try {
-      await setPantryQuantity(ingredient, amount, location);
+      await setPantryQuantity(ingredient, amount, location, selected?.id === ingredient.id ? unit : ingredient.defaultUnit);
       setSelected(undefined); setSearch(''); setQuantity('1');
     } catch (cause) {
       Alert.alert('Could not save', cause instanceof Error ? cause.message : 'Please try again');
@@ -49,7 +52,7 @@ export default function FridgeScreen() {
   }
 
   return <SafeAreaView style={styles.page} edges={['top', 'left', 'right']}>
-    <FlatList data={matches} keyExtractor={({ recipe }) => recipe.id}
+    <FlatList data={matches} keyExtractor={({ recipe }) => recipe.id} keyboardShouldPersistTaps="handled"
       contentContainerStyle={styles.content}
       ListHeaderComponent={<View style={styles.section}>
         <Text style={styles.eyebrow}>LU2 · YOUR OFFLINE KITCHEN</Text>
@@ -57,19 +60,21 @@ export default function FridgeScreen() {
         <Text style={styles.body}>Keep your pantry here. Find meals from recipes saved on this device.</Text>
         {loading && <ActivityIndicator accessibilityLabel="Loading pantry" />}
         {error && <Text accessibilityRole="alert" style={styles.error}>{error}</Text>}
-        <TextInput accessibilityLabel="Find an ingredient" placeholder="Find an ingredient…" value={search}
+        <TextInput accessibilityLabel="Find an ingredient" placeholder="Find an ingredient…" placeholderTextColor={colors.muted} value={search}
           onChangeText={(value) => { setSearch(value); setSelected(undefined); }} style={styles.input} />
         {suggestions.map((ingredient) => <Pressable key={ingredient.id} accessibilityRole="button" style={styles.suggestion}
-          onPress={() => { setSelected(ingredient); setSearch(ingredient.displayName); setQuantity(String(pantry.find((item) => item.ingredientId === ingredient.id)?.quantity ?? 1)); }}>
-          <Text>{ingredient.displayName} · {ingredient.defaultUnit}</Text>
+          onPress={() => { const stock = pantry.find((item) => item.ingredientId === ingredient.id); setSelected(ingredient); setSearch(ingredient.displayName); setQuantity(String(stock?.quantity ?? 1)); setUnit(stock?.unit ?? ingredient.defaultUnit); setLocation(stock?.storageLocation ?? 'fridge'); }}>
+          <Text style={styles.body}>{ingredient.displayName} · {ingredient.defaultUnit}</Text>
         </Pressable>)}
         {selected && <View style={styles.section}>
-          <TextInput accessibilityLabel={`Quantity in ${selected.defaultUnit}`} value={quantity} onChangeText={setQuantity}
+          <TextInput accessibilityLabel={`Quantity in ${unit}`} value={quantity} onChangeText={setQuantity}
             keyboardType="decimal-pad" style={styles.input} />
-          <Text style={styles.body}>Total on hand in {selected.defaultUnit}. Enter 0 to remove.</Text>
+          <Text style={styles.body}>Total on hand in {unit}. Enter 0 to remove.</Text>
+          <View style={styles.row}>{[...new Set([selected.defaultUnit, 'g', 'kg', 'ml', 'l', 'tsp', 'tbsp', 'piece'])].map((value) => <Pressable key={value} accessibilityRole="radio" accessibilityLabel={`Use ${value}`} accessibilityState={{ checked: value === unit }} style={[styles.chip, value === unit && styles.active]} onPress={() => setUnit(value)}><Text style={styles.body}>{value}</Text></Pressable>)}</View>
+          <Text style={styles.muted}>Changing units changes the unit you are entering; it does not convert the number. Use g for a weighed onion, or piece for a count.</Text>
           <View style={styles.row}>{locations.map((value) => <Pressable key={value} accessibilityRole="button"
             accessibilityState={{ selected: value === location }} style={[styles.chip, value === location && styles.active]}
-            onPress={() => setLocation(value)}><Text>{locationLabel(value)}</Text></Pressable>)}</View>
+            onPress={() => setLocation(value)}><Text style={styles.body}>{locationLabel(value)}</Text></Pressable>)}</View>
           <Pressable accessibilityRole="button" disabled={saving || !quantity.trim() || !Number.isFinite(Number(quantity)) || Number(quantity) < 0}
             style={styles.button} onPress={() => { void save(selected, Number(quantity)); }}><Text style={styles.buttonText}>{saving ? 'Saving…' : 'Save quantity'}</Text></Pressable>
         </View>}
@@ -82,7 +87,7 @@ export default function FridgeScreen() {
           </View>)}
           {!pantry.some((item) => item.storageLocation === value) && <Text style={styles.muted}>Nothing added yet</Text>}
         </View>)}
-        {!ingredients.length && !loading && <Pressable accessibilityRole="button" style={styles.button}
+        {!recipes.length && !loading && <Pressable accessibilityRole="button" style={styles.button}
           onPress={() => { void loadDemoRecipes().catch((cause: Error) => Alert.alert('Could not load sample', cause.message)); }}>
           <Text style={styles.buttonText}>Try an offline sample recipe</Text>
         </Pressable>}
@@ -103,21 +108,22 @@ export default function FridgeScreen() {
 }
 
 const styles = StyleSheet.create({
-  page: { flex: 1, backgroundColor: '#f7f6ef' },
+  page: { flex: 1, backgroundColor: colors.paper },
   content: { padding: 20, paddingBottom: 36, gap: 16 },
   section: { gap: 12 }, row: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  eyebrow: { color: '#23664a', fontWeight: '700', fontSize: 12, letterSpacing: 1 },
-  title: { fontSize: 34, fontWeight: '700', color: '#1d342a' },
-  heading: { fontSize: 20, fontWeight: '600', color: '#1d342a' },
-  body: { fontSize: 16, color: '#344e42', flexShrink: 1 },
-  muted: { color: '#617367', fontSize: 14 }, error: { color: '#a62c24' },
-  input: { backgroundColor: '#fff', borderColor: '#bdc9bf', borderWidth: 1, borderRadius: 12, padding: 14, fontSize: 17, color: '#1d342a' },
-  suggestion: { padding: 12, backgroundColor: '#fff', borderRadius: 8 },
-  chip: { padding: 12, backgroundColor: '#e8ece3', borderRadius: 20 }, active: { backgroundColor: '#c0ddc6' },
-  button: { backgroundColor: '#23664a', padding: 15, borderRadius: 12, minHeight: 48 },
-  buttonText: { color: '#fff', fontWeight: '600', textAlign: 'center' },
+  eyebrow: { color: colors.accent, fontWeight: '700', fontSize: 12, letterSpacing: 1 },
+  title: { fontSize: 34, fontFamily: headingFont, color: colors.ink },
+  heading: { fontSize: 20, fontWeight: '600', color: colors.ink },
+  body: { fontSize: 16, color: colors.ink, flexShrink: 1 },
+  muted: { color: colors.muted, fontSize: 14 }, error: { color: colors.error },
+  input: { backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1, borderRadius: 12, padding: 14, fontSize: 17, color: colors.ink },
+  suggestion: { padding: 12, backgroundColor: colors.surface, borderRadius: 8 },
+  chip: { padding: 12, minHeight: 48, backgroundColor: colors.surface, borderWidth: 2, borderColor: 'transparent', borderRadius: 20 },
+  active: { backgroundColor: colors.inset, borderColor: colors.accent },
+  button: { backgroundColor: colors.accent, padding: 15, borderRadius: 12, minHeight: 48 },
+  buttonText: { color: colors.onAccent, fontWeight: '600', textAlign: 'center' },
   inventory: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12 },
-  link: { color: '#23664a', fontSize: 16, paddingVertical: 10 },
-  card: { backgroundColor: '#fff', padding: 18, borderRadius: 16, gap: 10 },
-  badge: { color: '#23664a', fontWeight: '700' },
+  link: { color: colors.accent, fontSize: 16, paddingVertical: 14, minHeight: 48 },
+  card: { backgroundColor: colors.surface, padding: 18, borderRadius: 16, gap: 10 },
+  badge: { color: colors.accent, fontWeight: '700' },
 });

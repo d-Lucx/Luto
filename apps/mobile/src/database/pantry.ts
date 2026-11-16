@@ -9,8 +9,10 @@ export async function setPantryQuantity(
   ingredient: Ingredient,
   quantity: number,
   storageLocation: StorageLocation,
+  unit: string = ingredient.defaultUnit,
 ): Promise<void> {
   if (!Number.isFinite(quantity) || quantity < 0) throw new RangeError('Quantity must be zero or greater');
+  if (!unit.trim() || unit.length > 30) throw new RangeError('Choose a valid quantity unit.');
   await database.write(async () => {
     const collection = database.get<UserPantry>('local_pantry');
     const existing = await collection.query(
@@ -25,7 +27,7 @@ export async function setPantryQuantity(
       record.userId = LOCAL_GUEST_ID;
       record.ingredientId = ingredient.id;
       record.quantity = quantity;
-      record.unit = ingredient.defaultUnit;
+      record.unit = unit.trim();
       record.storageLocation = storageLocation;
       record.updatedAt = Date.now();
     };

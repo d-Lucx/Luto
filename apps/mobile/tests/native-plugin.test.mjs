@@ -1,6 +1,17 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import native from '../plugins/watermelonNative.cjs';
+import { existsSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
+
+test('Metro can load the Babel config in the ES module package', () => {
+  const cjs = new URL('../babel.config.cjs', import.meta.url);
+  const path = existsSync(cjs) ? cjs : new URL('../babel.config.js', import.meta.url);
+  const configFactory = createRequire(import.meta.url)(fileURLToPath(path));
+  const config = configFactory({ cache() {} });
+  assert.ok(config.presets.includes('babel-preset-expo'));
+});
 
 test('native transforms insert JSI and simdjson configuration idempotently', () => {
   const inputs = {

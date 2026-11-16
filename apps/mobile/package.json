@@ -15,10 +15,20 @@
     "@nozbe/simdjson": "^3.9.4",
     "@nozbe/watermelondb": "0.28.0",
     "expo": "~54.0.0",
+    "expo-crypto": "~15.0.9",
     "expo-dev-client": "~6.0.0",
+    "expo-file-system": "~19.0.24",
+    "expo-intent-launcher": "~13.0.8",
+    "expo-keep-awake": "~15.0.8",
+    "expo-linking": "~8.0.12",
+    "expo-notifications": "~0.32.17",
     "expo-router": "~6.0.0",
+    "expo-secure-store": "~15.0.8",
     "expo-status-bar": "~3.0.0",
+    "expo-video": "~3.0.16",
+    "expo-web-browser": "~15.0.11",
     "react": "19.1.0",
+    "react-dom": "19.1.0",
     "react-native": "0.81.5",
     "react-native-safe-area-context": "~5.6.0",
     "react-native-screens": "~4.16.0"
@@ -26,10 +36,19 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@babel/plugin-proposal-decorators": "^7.25.9",
-    "@types/react": "~19.1.0",
     "@types/node": "^24.0.0",
+    "@types/react": "~19.1.0",
     "babel-preset-expo": "~54.0.0",
     "typescript": "~5.9.2"
   },
-  "engines": { "node": ">=22.18.0" }
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "overrides": {
+    "@nozbe/watermelondb": {
+      "@babel/runtime": "7.26.10"
+    },
+    "node-forge": "1.4.3",
+    "postcss": "8.5.33"
+  }
 }

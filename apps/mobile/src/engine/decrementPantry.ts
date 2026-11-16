@@ -1,7 +1,9 @@
 // ==============================================================================
 // LUTO (Logo: Lu2) — Pantry Auto-Decrement Engine
-// Target: Post-Cooking Inventory Deduction with Unit Compatibility & Clamping
+// Target: Validated Post-Cooking Inventory Deduction in Pantry Units
 // ==============================================================================
+
+import { convertQuantity } from './units.ts';
 
 export interface PantryStockItem {
   id?: string;
@@ -32,7 +34,8 @@ export interface DecrementResult {
 /**
  * Calculates new pantry quantities after cooking completion.
  * Only deducts items that the user has checked (selected: true).
- * Ensures quantities never become negative (clamped to 0).
+ * Validates the entire calculation before the caller writes any changes.
+ * Throws for shortages and unknown conversions; never mutates input stock.
  */
 export function calculatePantryDecrement(
   currentPantry: PantryStockItem[],
@@ -40,7 +43,13 @@ export function calculatePantryDecrement(
 ): DecrementResult {
   const stockMap = new Map<string, PantryStockItem>();
   for (const item of currentPantry) {
-    stockMap.set(item.ingredientId, { ...item });
+    if (!Number.isFinite(item.quantity) || item.quantity < 0) {
+      throw new RangeError('Pantry stock quantity must be a finite nonnegative number.');
+    }
+    if (stockMap.has(item.ingredientId)) {
+      throw new Error('Duplicate pantry stock for an ingredient. Update your pantry before deducting.');
+    }
+    stockMap.set(item.ingredientId, { id: item.id, ingredientId: item.ingredientId, quantity: item.quantity, unit: item.unit });
   }
 
   const updatedStock = new Map<string, number>();
@@ -48,14 +57,26 @@ export function calculatePantryDecrement(
   const summary: DecrementResult['summary'] = [];
 
   for (const used of usedIngredients) {
-    if (!used.selected || used.amount <= 0) continue;
+    if (!used.selected) continue;
+    if (!Number.isFinite(used.amount) || used.amount < 0) {
+      throw new RangeError('Used ingredient amount must be a finite nonnegative number.');
+    }
+    if (used.amount === 0) continue;
 
     const stock = stockMap.get(used.ingredientId);
-    if (!stock) continue;
+    const name = used.name || used.ingredientId;
+    if (!stock) throw new Error(`No pantry stock for ${name}. Uncheck it or update your pantry.`);
 
     const prevQty = stock.quantity;
-    // Units match or standard assumption
-    const newQty = Math.max(0, Number((prevQty - used.amount).toFixed(3)));
+    const consumed = convertQuantity(used.amount, used.unit, stock.unit);
+    if (consumed === null) {
+      throw new Error(`Cannot convert ${used.unit} to ${stock.unit} for ${name}. Update the units in your pantry.`);
+    }
+    const tolerance = Math.max(1, prevQty, consumed) * 1e-12;
+    if (consumed - prevQty > tolerance) {
+      throw new Error(`Not enough stock for ${name}. Uncheck it or update your pantry.`);
+    }
+    const newQty = Number(Math.max(0, prevQty - consumed).toPrecision(15));
 
     stock.quantity = newQty;
     updatedStock.set(used.ingredientId, newQty);
@@ -68,7 +89,7 @@ export function calculatePantryDecrement(
       ingredientId: used.ingredientId,
       previousQuantity: prevQty,
       newQuantity: newQty,
-      deductedAmount: Number((prevQty - newQty).toFixed(3)),
+      deductedAmount: Number((prevQty - newQty).toPrecision(15)),
     });
   }
 

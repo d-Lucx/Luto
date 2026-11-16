@@ -1,3 +1,5 @@
+import { convertQuantity as convert } from './units.ts';
+
 export interface IngredientRequirement {
   id: string;
   name: string;
@@ -32,29 +34,6 @@ export interface MatchResult {
     ratio: number;
   }>;
   canCookNow: boolean;
-}
-
-// Mass and volume conversions are safe within a dimension only. A density or
-// ingredient-specific conversion is required before comparing g against ml.
-const units: Record<string, { dimension: string; factor: number }> = {
-  g: { dimension: 'mass', factor: 1 }, kg: { dimension: 'mass', factor: 1000 },
-  ml: { dimension: 'volume', factor: 1 }, l: { dimension: 'volume', factor: 1000 },
-  tsp: { dimension: 'volume', factor: 5 }, tbsp: { dimension: 'volume', factor: 15 },
-};
-
-function normalizeUnit(unit: string): string {
-  return unit.trim().toLowerCase();
-}
-
-function convert(quantity: number, from: string, to: string): number | null {
-  if (!Number.isFinite(quantity) || quantity < 0) return null;
-  const source = normalizeUnit(from);
-  const target = normalizeUnit(to);
-  if (!source || !target) return null;
-  if (source === target) return quantity;
-  const a = units[source];
-  const b = units[target];
-  return a && b && a.dimension === b.dimension ? quantity * a.factor / b.factor : null;
 }
 
 function supportsContext(rule: SubstitutionRule, context?: string): boolean {

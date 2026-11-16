@@ -12,6 +12,7 @@ export interface CachedMediaItem {
   downloadedAt: number;
 }
 
+/** @deprecated Legacy in-memory bookkeeping only. Use recipeMedia.ts for verified persistent downloads. */
 export class OfflineMediaManager {
   private static cacheIndex: Map<string, CachedMediaItem> = new Map();
   private static maxCacheSizeBytes: number = 250 * 1024 * 1024; // 250 MB default cap

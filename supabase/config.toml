@@ -1,0 +1,4 @@
+project_id = "luto"
+[functions.community]
+# Public discovery shares this endpoint. Mutations independently verify Auth's user endpoint.
+verify_jwt = false

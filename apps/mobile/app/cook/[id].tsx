@@ -1,334 +1,178 @@
-// ==============================================================================
-// LUTO (Logo: Lu2) — Hands-Free Distraction-Free Kitchen Cooking Mode
-// Screen: app/cook/[id].tsx
-// ==============================================================================
-
-import React, { useEffect, useMemo, useState } from 'react';
-import {
-  ActivityIndicator,
-  Modal,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ActivityIndicator, AppState, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useLocalSearchParams, useRouter, useFocusEffect } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Q } from '@nozbe/watermelondb';
-import { database } from '../../src/database/index';
-import { Recipe, RecipeIngredient, RecipeStep, Technique, UserPantry, Ingredient } from '../../src/database/models';
-import { LOCAL_GUEST_ID } from '../../src/database/pantry';
-import { TimerManager, CookingTimer } from '../../src/services/timer/TimerManager';
-import { CookedItModal, CookedIngredient } from '../../src/components/CookedItModal';
-import { calculatePantryDecrement } from '../../src/engine/decrementPantry';
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
+import { TimerManager, type CookingTimer } from '../../src/services/timer/TimerManager';
+import { cancelSessionAlerts, syncTimerAlerts } from '../../src/services/timer/notifications';
+import { openAlarmSettings } from '../../src/services/timer/alarmSettings';
+import { finishSession, getSession, saveSession, startOrResumeSession, undoSession, type Session } from '../../src/database/sessions';
+import { CookedItModal } from '../../src/components/CookedItModal';
+import { colors } from '../../src/theme';
+import { basics } from '../../src/content/basics';
+import { ActionButton } from '../../src/components/ActionButton';
+import { StepMedia } from '../../src/components/StepMedia';
 
 export default function CookingModeScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id, sessionId } = useLocalSearchParams<{ id: string; sessionId?: string }>();
   const router = useRouter();
-
-  const [loading, setLoading] = useState(true);
-  const [recipe, setRecipe] = useState<Recipe | null>(null);
-  const [steps, setSteps] = useState<RecipeStep[]>([]);
-  const [ingredients, setIngredients] = useState<CookedIngredient[]>([]);
-  const [activeStepIndex, setActiveStepIndex] = useState(0);
-
-  // Technique Modal State
-  const [activeTechnique, setActiveTechnique] = useState<Technique | null>(null);
-
-  // Timer State
-  const timerManager = useMemo(() => new TimerManager(), []);
-  const [activeTimers, setActiveTimers] = useState<CookingTimer[]>([]);
-
-  // Completion / Deduction Modal
-  const [showCompletionModal, setShowCompletionModal] = useState(false);
-  const [startTimeMs] = useState(Date.now());
-
+  const [session, setSession] = useState<Session | null>(null);
+  const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
+  const [busy, setBusy] = useState(false);
+  const guard = useRef(false);
+  const alarmSettingsPending = useRef(false);
+  const loadedSession = useRef<{ recipeId: string; id: string } | null>(null);
+  const [step, setStep] = useState(0);
+  const [completion, setCompletion] = useState(false);
+  const [expandedTerms, setExpandedTerms] = useState<Set<string>>(new Set());
+  const [timers, setTimers] = useState<CookingTimer[]>([]);
+  const manager = useMemo(() => new TimerManager(), []);
+  useFocusEffect(useCallback(() => {
+    void activateKeepAwakeAsync('lu2-cooking').catch(() => {});
+    return () => deactivateKeepAwake('lu2-cooking');
+  }, []));
   useEffect(() => {
+    manager.startClock();
+    const unsub = manager.subscribe((all) => setTimers([...all]));
+    return () => { unsub(); manager.stopClock(); };
+  }, [manager]);
+  useFocusEffect(useCallback(() => {
     let active = true;
-
-    async function loadRecipeData() {
-      if (!id) return;
+    async function refresh() {
+      if (guard.current) return;
       try {
-        const recipeRecord = await database.get<Recipe>('local_recipes').find(id);
-        const stepRecords = await database
-          .get<RecipeStep>('local_steps')
-          .query(Q.where('recipe_id', id), Q.sortBy('step_number', Q.asc))
-          .fetch();
-
-        const reqRecords = await database
-          .get<RecipeIngredient>('local_ingredients')
-          .query(Q.where('recipe_id', id))
-          .fetch();
-
-        const ingredientDictionary = await database.get<Ingredient>('ingredients').query().fetch();
-        const dictMap = new Map(ingredientDictionary.map((i) => [i.id, i.displayName]));
-
-        const cookedList: CookedIngredient[] = reqRecords.map((r) => ({
-          ingredientId: r.ingredientId,
-          name: dictMap.get(r.ingredientId) || 'Ingredient',
-          amount: r.amount,
-          unit: r.unit,
-        }));
-
-        if (active) {
-          setRecipe(recipeRecord);
-          setSteps(stepRecords);
-          setIngredients(cookedList);
-
-          // Initialize timers for steps that have durations
-          for (const s of stepRecords) {
-            if (s.timerDurationSeconds > 0) {
-              timerManager.createTimer(
-                `timer-step-${s.stepNumber}`,
-                s.stepNumber,
-                `Step ${s.stepNumber} Timer`,
-                s.timerDurationSeconds
-              );
+        const persistedId = sessionId ?? (loadedSession.current?.recipeId === id ? loadedSession.current.id : undefined);
+        const loaded = persistedId ? await getSession(persistedId) : await startOrResumeSession(id);
+        if (loaded.recipeId !== id) throw new Error('This session belongs to a different recipe.');
+        if (active) { loadedSession.current = { recipeId: id, id: loaded.id }; setSession(loaded); setStep(loaded.data.stepIndex); manager.restore(loaded.data.timers); }
+        if (active && loaded.status === 'active') {
+          try {
+            // Replace a previously inexact alarm after visiting the system page.
+            if (alarmSettingsPending.current) {
+              alarmSettingsPending.current = false;
+              await cancelSessionAlerts(loaded.id);
             }
-          }
+            await syncTimerAlerts(loaded.id, id, loaded.data.title, loaded.data.timers, false);
+          } catch { if (active) setNotice('Timers are saved, but alerts could not be scheduled. Keep this screen open or pause and resume your timer to try again.'); }
         }
-      } catch (err) {
-        console.warn('Failed to load recipe for cook mode', err);
-      } finally {
-        if (active) setLoading(false);
-      }
+      } catch (e) { if (active) setError(e instanceof Error ? e.message : 'Could not restore cooking.'); }
     }
-
-    void loadRecipeData();
-    const unsub = timerManager.subscribe((t) => setActiveTimers([...t]));
-
-    return () => {
-      active = false;
-      unsub();
-      timerManager.stopClock();
-    };
-  }, [id, timerManager]);
-
-  const currentStep = steps[activeStepIndex];
-  const stepTimer = currentStep
-    ? activeTimers.find((t) => t.stepNumber === currentStep.stepNumber)
-    : undefined;
-
-  const handleFinishCooking = () => {
-    setShowCompletionModal(true);
-  };
-
-  const handleConfirmDeduction = async ({
-    deductIngredientIds,
-  }: {
-    deductIngredientIds: string[];
-    rating: number;
-    reviewText: string;
-  }) => {
+    void refresh();
+    const listener = AppState.addEventListener('change', (state) => { if (state === 'active') void refresh(); });
+    return () => { active = false; listener.remove(); };
+  }, [id, sessionId, manager]));
+  async function configureAlarms() {
+    alarmSettingsPending.current = true;
     try {
-      const pantryRecords = await database
-        .get<UserPantry>('local_pantry')
-        .query(Q.where('user_id', LOCAL_GUEST_ID))
-        .fetch();
-
-      const usedItems = ingredients.map((item) => ({
-        ingredientId: item.ingredientId,
-        amount: item.amount,
-        unit: item.unit,
-        selected: deductIngredientIds.includes(item.ingredientId),
-      }));
-
-      const stockItems = pantryRecords.map((p) => ({
-        id: p.id,
-        ingredientId: p.ingredientId,
-        quantity: p.quantity,
-        unit: p.unit,
-      }));
-
-      const { updatedStock, deletedStockIds } = calculatePantryDecrement(stockItems, usedItems);
-
-      await database.write(async () => {
-        const batchOps: any[] = [];
-        for (const record of pantryRecords) {
-          if (deletedStockIds.includes(record.id)) {
-            batchOps.push(record.prepareMarkAsDeleted());
-          } else if (updatedStock.has(record.ingredientId)) {
-            const newQty = updatedStock.get(record.ingredientId)!;
-            batchOps.push(
-              record.prepareUpdate((p) => {
-                p.quantity = newQty;
-                p.updatedAt = Date.now();
-              })
-            );
-          }
-        }
-        if (batchOps.length > 0) {
-          await database.batch(...batchOps);
-        }
-      });
-    } catch (e) {
-      console.warn('Error deducting pantry', e);
-    } finally {
-      router.back();
+      await openAlarmSettings();
+    } catch {
+      alarmSettingsPending.current = false;
+      setNotice('Could not open alarm settings. Open Android Settings, find Luto under Alarms & reminders, and allow it. Then return here or pause and resume your timer.');
     }
-  };
-
-  if (loading) {
-    return (
-      <SafeAreaView style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#38a169" />
-        <Text style={styles.loadingText}>Setting up kitchen mode...</Text>
-      </SafeAreaView>
-    );
   }
-
-  if (!recipe || !currentStep || steps.length === 0) {
-    return (
-      <SafeAreaView style={styles.loadingContainer}>
-        <Text style={styles.errorText}>Recipe steps not found.</Text>
-        <Pressable style={styles.backButton} onPress={() => router.back()}>
-          <Text style={styles.backButtonText}>Return</Text>
-        </Pressable>
-      </SafeAreaView>
-    );
+  async function timerAction(action: 'start' | 'pause' | 'reset', timerId: string) {
+    if (!session || guard.current) return;
+    guard.current = true; setBusy(true); setError('');
+    const before = manager.getAllTimers().map((t) => ({ ...t }));
+    try {
+      if (action === 'start') manager.startTimer(timerId);
+      else if (action === 'pause') manager.pauseTimer(timerId);
+      else manager.resetTimer(timerId);
+      const snapshot = manager.getAllTimers().map((t) => ({ ...t }));
+      await saveSession(session.id, { timers: snapshot });
+      try {
+        const allowed = await syncTimerAlerts(session.id, id, session.data.title, snapshot, action === 'start');
+        setNotice(allowed ? 'Notification permission is enabled. Device battery settings can still affect delivery.' : 'Notifications are off. Keep this screen open to watch your timer.');
+      } catch { setNotice('Timer saved; alert could not be scheduled. Keep this screen open.'); }
+    } catch (e) { manager.restore(before); setError(e instanceof Error ? e.message : 'Could not save timer.'); }
+    finally { guard.current = false; setBusy(false); }
   }
-
-  const elapsedMinutes = Math.max(1, Math.round((Date.now() - startTimeMs) / 60000));
-
-  return (
-    <SafeAreaView style={styles.screen}>
-      {/* Top Header */}
-      <View style={styles.header}>
-        <Pressable style={styles.exitBtn} onPress={() => router.back()}>
-          <Text style={styles.exitBtnText}>✕ Exit</Text>
-        </Pressable>
-        <Text style={styles.headerTitle} numberOfLines={1}>
-          {recipe.title}
-        </Text>
-        <Text style={styles.stepProgress}>
-          {activeStepIndex + 1} / {steps.length}
-        </Text>
-      </View>
-
-      {/* Main Step Display */}
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.stepCard}>
-          <Text style={styles.stepLabel}>STEP {currentStep.stepNumber}</Text>
-          <Text style={styles.instructionText}>{currentStep.instruction}</Text>
-
-          {/* Active Step Timer Widget */}
-          {stepTimer && (
-            <View style={styles.timerBox}>
-              <Text style={styles.timerLabel}>{stepTimer.label}</Text>
-              <Text style={styles.timerDigits}>
-                {TimerManager.formatTime(stepTimer.remainingSeconds)}
-              </Text>
-              <View style={styles.timerControls}>
-                {stepTimer.status !== 'running' ? (
-                  <Pressable
-                    style={styles.timerStartBtn}
-                    onPress={() => timerManager.startTimer(stepTimer.id)}
-                  >
-                    <Text style={styles.timerBtnText}>▶ Start Timer</Text>
-                  </Pressable>
-                ) : (
-                  <Pressable
-                    style={styles.timerPauseBtn}
-                    onPress={() => timerManager.pauseTimer(stepTimer.id)}
-                  >
-                    <Text style={styles.timerBtnText}>⏸ Pause</Text>
-                  </Pressable>
-                )}
-                <Pressable
-                  style={styles.timerResetBtn}
-                  onPress={() => timerManager.resetTimer(stepTimer.id)}
-                >
-                  <Text style={styles.timerBtnTextSecondary}>↺ Reset</Text>
-                </Pressable>
-              </View>
-            </View>
-          )}
-        </View>
-      </ScrollView>
-
-      {/* Bottom Navigation Bar */}
-      <View style={styles.footer}>
-        <Pressable
-          style={[styles.navBtn, activeStepIndex === 0 && styles.navBtnDisabled]}
-          disabled={activeStepIndex === 0}
-          onPress={() => setActiveStepIndex((prev) => Math.max(0, prev - 1))}
-        >
-          <Text style={styles.navBtnText}>← Previous</Text>
-        </Pressable>
-
-        {activeStepIndex < steps.length - 1 ? (
-          <Pressable
-            style={styles.nextBtn}
-            onPress={() => setActiveStepIndex((prev) => Math.min(steps.length - 1, prev + 1))}
-          >
-            <Text style={styles.nextBtnText}>Next Step →</Text>
-          </Pressable>
-        ) : (
-          <Pressable style={styles.finishBtn} onPress={handleFinishCooking}>
-            <Text style={styles.finishBtnText}>✓ Finish Cooking</Text>
-          </Pressable>
-        )}
-      </View>
-
-      {/* Technique Modal */}
-      <Modal visible={Boolean(activeTechnique)} transparent animationType="fade">
-        <View style={styles.modalBackdrop}>
-          <View style={styles.techniqueModal}>
-            <Text style={styles.techniqueBadge}>TECHNIQUE GUIDE</Text>
-            <Text style={styles.techniqueTitle}>{activeTechnique?.title}</Text>
-            <Text style={styles.techniqueSummary}>{activeTechnique?.summary}</Text>
-            <Pressable
-              style={styles.modalCloseBtn}
-              onPress={() => setActiveTechnique(null)}
-            >
-              <Text style={styles.modalCloseText}>Got it</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
-
-      {/* Post-Cook Deduction & Review Modal */}
-      <CookedItModal
-        visible={showCompletionModal}
-        recipeTitle={recipe.title}
-        durationMinutes={elapsedMinutes}
-        ingredients={ingredients}
-        onClose={() => setShowCompletionModal(false)}
-        onConfirm={handleConfirmDeduction}
-      />
-    </SafeAreaView>
-  );
+  async function changeStep(next: number) {
+    if (!session || guard.current) return;
+    guard.current = true; setBusy(true);
+    try { await saveSession(session.id, { stepIndex: next }); setStep(next); setError(''); }
+    catch { setError('Your step could not be saved. Try again.'); }
+    finally { guard.current = false; setBusy(false); }
+  }
+  async function complete({ deductIngredientIds }: { deductIngredientIds: string[] }) {
+    if (!session) throw new Error('No session loaded.');
+    await finishSession(session.id, deductIngredientIds);
+    setSession(await getSession(session.id)); manager.restore([]);
+    await cancelSessionAlerts(session.id).catch(() => setNotice('Cooking saved; an old alert may remain until restart.'));
+  }
+  async function undo() {
+    if (!session || guard.current) return;
+    guard.current = true; setBusy(true);
+    try { await undoSession(session.id); setSession(await getSession(session.id)); setError(''); }
+    catch (e) { setError(e instanceof Error ? e.message : 'Could not undo.'); }
+    finally { guard.current = false; setBusy(false); }
+  }
+  const leave = () => router.canGoBack() ? router.back() : router.replace('/(tabs)/recipes');
+  const button = (label: string, action: () => void, disabled = false) => <Pressable accessibilityRole="button" accessibilityState={{ disabled }} disabled={disabled} style={styles.nextBtn} onPress={action}><Text style={styles.nextBtnText}>{label}</Text></Pressable>;
+  if (!session) return <SafeAreaView style={styles.loadingContainer}>{error ? <Text accessibilityRole="alert" style={styles.errorText}>{error}</Text> : <ActivityIndicator color={colors.accent} />}{button('Back to recipes', leave)}</SafeAreaView>;
+  const current = session.data.steps[step];
+  const timer = timers.find((t) => t.stepNumber === current?.stepNumber);
+  return <SafeAreaView style={styles.screen}>
+    <View style={styles.header}><Pressable accessibilityRole="button" style={styles.exitBtn} onPress={leave}><Text style={styles.exitBtnText}>Save & exit</Text></Pressable><Text numberOfLines={1} style={styles.headerTitle}>{session.data.title}</Text><Text style={styles.stepProgress}>{step + 1} / {session.data.steps.length}</Text></View>
+    <ScrollView contentContainerStyle={styles.content}>
+      <Text style={styles.loadingText}>{session.data.servings} servings · Progress saved on this device</Text>
+      {!!error && <Text accessibilityRole="alert" style={styles.errorText}>{error}</Text>}
+      {!!notice && <Text accessibilityLiveRegion="polite" style={styles.loadingText}>{notice}</Text>}
+      {session.status !== 'active' ? <View style={styles.stepCard}>
+        <Text accessibilityRole="header" style={styles.instructionText}>{session.status === 'undone' ? 'Pantry update undone' : 'Cooking completed'}</Text>
+        <Text style={styles.loadingText}>{session.status === 'undone' ? 'Consumed ingredients were added back to your current pantry.' : 'This session is saved. Reopening it will never deduct ingredients again.'}</Text>
+        {session.status === 'completed' && session.data.consumed.length > 0 && button('Undo pantry deduction', () => void undo(), busy)}
+        {button('Back to recipes', leave)}
+      </View> : <View style={styles.stepCard}>
+        <Text style={styles.stepLabel}>STEP {current?.stepNumber}</Text><Text style={styles.instructionText}>{current?.instruction}</Text>
+        <StepMedia recipeId={id} url={current?.mediaUrl} mimeType={current?.mimeType} />
+        {basics.filter((term) => (current?.instruction ?? '').normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase().includes(term.slug)).map((term) => <View key={term.slug} style={{ gap: 8, marginTop: 16 }}><Pressable accessibilityRole="button" accessibilityState={{ expanded: expandedTerms.has(term.slug) }} style={{ minHeight: 48, justifyContent: 'center' }} onPress={() => setExpandedTerms((previous) => { const next = new Set(previous); if (next.has(term.slug)) next.delete(term.slug); else next.add(term.slug); return next; })}><Text style={styles.timerLabel}>What does {term.title.toLowerCase()} mean?</Text></Pressable>{expandedTerms.has(term.slug) && <Text style={styles.loadingText}>{term.summary}</Text>}</View>)}
+        <ActionButton secondary label="Technique explainers" onPress={() => router.push('/techniques')} />
+        {timer && <View style={styles.timerBox}><Text style={styles.timerLabel}>{timer.label}</Text><Text style={styles.timerDigits} accessibilityLabel={timer.remainingSeconds + ' seconds remaining'}>{TimerManager.formatTime(timer.remainingSeconds)}</Text>
+          {timer.status === 'completed' && <Text accessibilityRole="alert" style={styles.loadingText}>Timer finished. Check your food.</Text>}
+          <View style={styles.timerControls}>{timer.status !== 'completed' && button(timer.status === 'running' ? 'Pause timer' : timer.status === 'paused' ? 'Resume timer' : 'Start timer', () => void timerAction(timer.status === 'running' ? 'pause' : 'start', timer.id), busy)}{button('Reset timer', () => void timerAction('reset', timer.id), busy)}</View>
+          {Platform.OS === 'android' && Number(Platform.Version) >= 31 && <View style={{ alignSelf: 'stretch', marginTop: 16, gap: 12 }}>
+            <Text style={styles.loadingText}>For precise alerts, allow Alarms &amp; reminders in Android settings. Device battery settings can still affect delivery.</Text>
+            <ActionButton secondary disabled={busy} label="Android alarm settings" onPress={() => void configureAlarms()} />
+          </View>}
+        </View>}
+      </View>}
+    </ScrollView>
+    {session.status === 'active' && <View style={styles.footer}>{button('Previous', () => void changeStep(step - 1), busy || step === 0)}{step < session.data.steps.length - 1 ? button('Next step', () => void changeStep(step + 1), busy) : button('Finish cooking', () => setCompletion(true), busy)}</View>}
+    {completion && <CookedItModal visible recipeTitle={session.data.title} durationMinutes={Math.max(1, Math.round((Date.now() - session.data.startedAt) / 60000))} ingredients={session.data.ingredients} onClose={() => setCompletion(false)} onConfirm={complete} />}
+  </SafeAreaView>;
 }
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: '#0c1610',
+    backgroundColor: colors.paper,
   },
   loadingContainer: {
     flex: 1,
-    backgroundColor: '#0c1610',
+    backgroundColor: colors.paper,
     alignItems: 'center',
     justifyContent: 'center',
   },
   loadingText: {
-    color: '#a7f3d0',
+    color: colors.muted,
     marginTop: 12,
     fontSize: 16,
   },
   errorText: {
-    color: '#f87171',
+    color: colors.error,
     fontSize: 18,
     marginBottom: 16,
   },
   backButton: {
+    minHeight: 48,
     padding: 12,
-    backgroundColor: '#1b2a21',
+    backgroundColor: colors.surface,
     borderRadius: 8,
   },
   backButtonText: {
-    color: '#fff',
+    color: colors.ink,
     fontWeight: '600',
   },
   header: {
@@ -338,16 +182,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 14,
     borderBottomWidth: 1,
-    borderColor: '#1e3325',
+    borderColor: colors.border,
   },
   exitBtn: {
+    minHeight: 48,
+    justifyContent: 'center',
     paddingVertical: 6,
     paddingHorizontal: 10,
     borderRadius: 8,
-    backgroundColor: '#1b2a21',
+    backgroundColor: colors.surface,
   },
   exitBtnText: {
-    color: '#9ca3af',
+    color: colors.muted,
     fontWeight: '700',
     fontSize: 14,
   },
@@ -355,12 +201,12 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 12,
     textAlign: 'center',
-    color: '#d1fae5',
+    color: colors.ink,
     fontSize: 16,
     fontWeight: '700',
   },
   stepProgress: {
-    color: '#84e1bc',
+    color: colors.accent,
     fontSize: 14,
     fontWeight: '800',
   },
@@ -370,42 +216,42 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   stepCard: {
-    backgroundColor: '#14231a',
+    backgroundColor: colors.surface,
     borderRadius: 24,
     padding: 28,
     borderWidth: 1,
-    borderColor: '#244030',
+    borderColor: colors.border,
   },
   stepLabel: {
-    color: '#34d399',
+    color: colors.accent,
     fontSize: 15,
     fontWeight: '800',
     letterSpacing: 2,
     marginBottom: 14,
   },
   instructionText: {
-    color: '#f9fafb',
+    color: colors.ink,
     fontSize: 25,
     lineHeight: 38,
     fontWeight: '600',
   },
   timerBox: {
     marginTop: 28,
-    backgroundColor: '#0c1610',
+    backgroundColor: colors.paper,
     borderRadius: 16,
     padding: 20,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#1e3325',
+    borderColor: colors.border,
   },
   timerLabel: {
-    color: '#9ca3af',
+    color: colors.muted,
     fontSize: 13,
     fontWeight: '600',
     textTransform: 'uppercase',
   },
   timerDigits: {
-    color: '#fbbf24',
+    color: colors.accent,
     fontSize: 52,
     fontWeight: '900',
     fontVariant: ['tabular-nums'],
@@ -413,33 +259,37 @@ const styles = StyleSheet.create({
   },
   timerControls: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 12,
   },
   timerStartBtn: {
-    backgroundColor: '#059669',
+    minHeight: 48,
+    backgroundColor: colors.accent,
     paddingVertical: 10,
     paddingHorizontal: 18,
     borderRadius: 10,
   },
   timerPauseBtn: {
-    backgroundColor: '#d97706',
+    minHeight: 48,
+    backgroundColor: colors.accent,
     paddingVertical: 10,
     paddingHorizontal: 18,
     borderRadius: 10,
   },
   timerResetBtn: {
-    backgroundColor: '#1f2937',
+    minHeight: 48,
+    backgroundColor: colors.inset,
     paddingVertical: 10,
     paddingHorizontal: 14,
     borderRadius: 10,
   },
   timerBtnText: {
-    color: '#ffffff',
+    color: colors.onAccent,
     fontWeight: '700',
     fontSize: 14,
   },
   timerBtnTextSecondary: {
-    color: '#9ca3af',
+    color: colors.muted,
     fontWeight: '600',
     fontSize: 14,
   },
@@ -447,14 +297,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 20,
     borderTopWidth: 1,
-    borderColor: '#1e3325',
-    backgroundColor: '#0c1610',
+    borderColor: colors.border,
+    backgroundColor: colors.paper,
     gap: 14,
   },
   navBtn: {
     flex: 1,
     paddingVertical: 16,
-    backgroundColor: '#1b2a21',
+    backgroundColor: colors.surface,
     borderRadius: 14,
     alignItems: 'center',
   },
@@ -462,31 +312,31 @@ const styles = StyleSheet.create({
     opacity: 0.35,
   },
   navBtnText: {
-    color: '#d1d5db',
+    color: colors.ink,
     fontSize: 16,
     fontWeight: '700',
   },
   nextBtn: {
     flex: 1.5,
     paddingVertical: 16,
-    backgroundColor: '#059669',
+    backgroundColor: colors.accent,
     borderRadius: 14,
     alignItems: 'center',
   },
   nextBtnText: {
-    color: '#ffffff',
+    color: colors.onAccent,
     fontSize: 17,
     fontWeight: '800',
   },
   finishBtn: {
     flex: 1.5,
     paddingVertical: 16,
-    backgroundColor: '#10b981',
+    backgroundColor: colors.accent,
     borderRadius: 14,
     alignItems: 'center',
   },
   finishBtnText: {
-    color: '#ffffff',
+    color: colors.onAccent,
     fontSize: 17,
     fontWeight: '800',
   },
@@ -499,38 +349,39 @@ const styles = StyleSheet.create({
   },
   techniqueModal: {
     width: '100%',
-    backgroundColor: '#1b2a21',
+    backgroundColor: colors.surface,
     borderRadius: 20,
     padding: 24,
     borderWidth: 1,
-    borderColor: '#38a169',
+    borderColor: colors.accent,
   },
   techniqueBadge: {
-    color: '#34d399',
+    color: colors.accent,
     fontSize: 12,
     fontWeight: '800',
     letterSpacing: 1.5,
   },
   techniqueTitle: {
-    color: '#ffffff',
+    color: colors.ink,
     fontSize: 22,
     fontWeight: '800',
     marginVertical: 8,
   },
   techniqueSummary: {
-    color: '#d1d5db',
+    color: colors.ink,
     fontSize: 15,
     lineHeight: 22,
     marginBottom: 20,
   },
   modalCloseBtn: {
-    backgroundColor: '#059669',
+    minHeight: 48,
+    backgroundColor: colors.accent,
     paddingVertical: 12,
     borderRadius: 10,
     alignItems: 'center',
   },
   modalCloseText: {
-    color: '#ffffff',
+    color: colors.onAccent,
     fontWeight: '700',
     fontSize: 15,
   },

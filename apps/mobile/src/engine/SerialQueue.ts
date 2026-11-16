@@ -1,0 +1,10 @@
+export class SerialQueue {
+  private pending = new Map<string, Promise<unknown>>();
+  run<T>(key: string, work: () => Promise<T>): Promise<T> {
+    const next = (this.pending.get(key) ?? Promise.resolve()).catch(() => {}).then(work);
+    this.pending.set(key, next);
+    const cleanup = () => { if (this.pending.get(key) === next) this.pending.delete(key); };
+    void next.then(cleanup, cleanup);
+    return next;
+  }
+}

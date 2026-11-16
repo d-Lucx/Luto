@@ -3,6 +3,7 @@
 // Target: Accurate Wall-Clock Kitchen Timers Resilient to App Sleep
 // ==============================================================================
 
+import { restoreTimers } from '../../engine/cookingSession.ts';
 export type TimerStatus = 'idle' | 'running' | 'paused' | 'completed';
 
 export interface CookingTimer {
@@ -42,7 +43,7 @@ export class TimerManager {
     }
   }
 
-  private startClock(): void {
+  public startClock(): void {
     if (this.intervalHandle) return;
     this.intervalHandle = setInterval(() => {
       this.tick();
@@ -54,6 +55,11 @@ export class TimerManager {
       clearInterval(this.intervalHandle);
       this.intervalHandle = null;
     }
+  }
+
+  public restore(timers: CookingTimer[]): void {
+    this.timers = new Map(restoreTimers(timers, Date.now()).map((timer) => [timer.id, timer]));
+    this.notify();
   }
 
   private tick(): void {

@@ -10,7 +10,7 @@ import { LOCAL_GUEST_ID } from '../src/database/constants.ts';
 // 1. Pantry Auto-Decrement Engine Tests
 // -----------------------------------------------------------------------------
 
-test('pantry decrement accurately deducts selected ingredients and clamps to zero', () => {
+test('pantry decrement deducts selected compatible quantities and leaves unselected stock unchanged', () => {
   const stock = [
     { id: 'stock-1', ingredientId: 'eggs', quantity: 6, unit: 'piece' },
     { id: 'stock-2', ingredientId: 'butter', quantity: 50, unit: 'g' },
@@ -19,7 +19,7 @@ test('pantry decrement accurately deducts selected ingredients and clamps to zer
 
   const used = [
     { ingredientId: 'eggs', amount: 2, unit: 'piece', selected: true },
-    { ingredientId: 'butter', amount: 60, unit: 'g', selected: true }, // exceeds stock
+    { ingredientId: 'butter', amount: 50, unit: 'g', selected: true },
     { ingredientId: 'flour', amount: 200, unit: 'g', selected: false }, // unselected
   ];
 
@@ -28,7 +28,7 @@ test('pantry decrement accurately deducts selected ingredients and clamps to zer
   // Eggs: 6 - 2 = 4
   assert.equal(result.updatedStock.get('eggs'), 4);
 
-  // Butter: 50 - 60 = 0 (clamped, never negative)
+  // Butter: exact consumption removes the empty stock record.
   assert.equal(result.updatedStock.get('butter'), 0);
   assert.ok(result.deletedStockIds.includes('stock-2'));
 
@@ -40,6 +40,67 @@ test('pantry decrement accurately deducts selected ingredients and clamps to zer
   assert.equal(eggSummary.previousQuantity, 6);
   assert.equal(eggSummary.newQuantity, 4);
   assert.equal(eggSummary.deductedAmount, 2);
+});
+
+test('deduction converts usage into the pantry unit before subtracting', () => {
+  const stock = [
+    { ingredientId: 'flour', quantity: 0.5, unit: ' KG ' },
+    { ingredientId: 'oil', quantity: 60, unit: 'ml' },
+  ];
+  const result = calculatePantryDecrement(stock, [
+    { ingredientId: 'flour', amount: 100, unit: 'g', selected: true },
+    { ingredientId: 'oil', amount: 2, unit: 'tbsp', selected: true },
+  ]);
+  assert.equal(result.updatedStock.get('flour'), 0.4);
+  assert.equal(result.updatedStock.get('oil'), 30);
+  assert.equal(stock[0].quantity, 0.5);
+});
+
+test('deduction refuses incompatible dimensions without changing stock', () => {
+  const stock = [{ ingredientId: 'milk', quantity: 500, unit: 'ml' }];
+  assert.throws(() => calculatePantryDecrement(stock, [
+    { ingredientId: 'milk', amount: 100, unit: 'g', selected: true },
+  ]), /convert|unit/i);
+  assert.equal(stock[0].quantity, 500);
+});
+
+test('deduction reports missing or insufficient stock instead of silently clamping', () => {
+  assert.throws(() => calculatePantryDecrement([
+    { ingredientId: 'eggs', quantity: 1, unit: 'piece' },
+  ], [{ ingredientId: 'eggs', amount: 2, unit: 'piece', selected: true }]), /enough|stock/i);
+  assert.throws(() => calculatePantryDecrement([], [
+    { ingredientId: 'eggs', amount: 2, unit: 'piece', selected: true },
+  ]), /stock|pantry/i);
+});
+
+test('deduction validates finite nonnegative quantities and unique stock records', () => {
+  for (const amount of [NaN, Infinity, -1]) {
+    assert.throws(() => calculatePantryDecrement([
+      { ingredientId: 'rice', quantity: 100, unit: 'g' },
+    ], [{ ingredientId: 'rice', amount, unit: 'g', selected: true }]), /quantity|amount/i);
+    assert.throws(() => calculatePantryDecrement([
+      { ingredientId: 'rice', quantity: amount, unit: 'g' },
+    ], []), /quantity|stock/i);
+  }
+  assert.throws(() => calculatePantryDecrement([
+    { ingredientId: 'rice', quantity: 100, unit: 'g' },
+    { ingredientId: 'rice', quantity: 50, unit: 'g' },
+  ], []), /duplicate/i);
+});
+
+test('repeated usage shares remaining stock and ignores deselected rows', () => {
+  const stock = [{ id: 'rice-stock', ingredientId: 'rice', quantity: 1, unit: 'kg' }];
+  const used = [
+    { ingredientId: 'rice', amount: 300, unit: 'g', selected: true },
+    { ingredientId: 'rice', amount: 0.2, unit: 'kg', selected: true },
+    { ingredientId: 'unknown', amount: NaN, unit: '', selected: false },
+    { ingredientId: 'unknown', amount: 0, unit: '', selected: true },
+  ];
+  assert.equal(calculatePantryDecrement(stock, used).updatedStock.get('rice'), 0.5);
+  assert.throws(() => calculatePantryDecrement(stock, [
+    ...used, { ingredientId: 'rice', amount: 600, unit: 'g', selected: true },
+  ]), /enough|stock/i);
+  assert.equal(stock[0].quantity, 1);
 });
 
 // -----------------------------------------------------------------------------

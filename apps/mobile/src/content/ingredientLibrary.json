@@ -1,0 +1,1027 @@
+[
+  {
+    "id": "edf3b274-9f67-488c-a4b9-04e36e42557f",
+    "canonical_name": "active_dry_yeast",
+    "display_name": "Active Dry Baker’s Yeast",
+    "category": "pantry_dry",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "yeast"
+    ]
+  },
+  {
+    "id": "ea6c6657-87c8-475b-a321-9e66c5ed80de",
+    "canonical_name": "agar_agar_powder",
+    "display_name": "Agar-Agar Powder",
+    "category": "pantry_dry",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "6845cbc8-69ff-4fe3-a06f-f556401caf06",
+    "canonical_name": "all_purpose_flour",
+    "display_name": "All-Purpose Wheat Flour",
+    "category": "pantry_dry",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "wheat",
+      "gluten"
+    ]
+  },
+  {
+    "id": "93c7491b-0c15-41db-aeb6-94ed8e48b18d",
+    "canonical_name": "animal_gelatin",
+    "display_name": "Unflavored Gelatin Powder",
+    "category": "pantry_dry",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "f0b59020-c9ad-4d7e-aa4d-e97f15db9613",
+    "canonical_name": "apple_cider_vinegar",
+    "display_name": "Raw Unfiltered Apple Cider Vinegar",
+    "category": "condiment",
+    "default_unit": "ml",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "668d147a-cf51-4158-aae7-7cf0a39fc96a",
+    "canonical_name": "applesauce",
+    "display_name": "Unsweetened Natural Applesauce",
+    "category": "canned",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "cab7b378-5dc9-487e-aa32-44a30ac2f0c7",
+    "canonical_name": "arrowroot_powder",
+    "display_name": "Arrowroot Starch Powder",
+    "category": "pantry_dry",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "89cd9e7e-a62d-4947-a1e1-3528eb8039d6",
+    "canonical_name": "avocado",
+    "display_name": "Ripe Hass Avocado",
+    "category": "produce",
+    "default_unit": "piece",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "88232f1a-cd2b-4e63-a929-9564c89b52a0",
+    "canonical_name": "baking_powder",
+    "display_name": "Double-Acting Aluminum-Free Baking Powder",
+    "category": "pantry_dry",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "corn"
+    ]
+  },
+  {
+    "id": "6a2176ad-2e11-43d6-a567-2c0efa0d7157",
+    "canonical_name": "baking_soda",
+    "display_name": "Pure Sodium Bicarbonate (Baking Soda)",
+    "category": "pantry_dry",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "8325c047-3a4c-4a87-a8ad-2e3d65e668c1",
+    "canonical_name": "bamboo_shoots",
+    "display_name": "Canned Sliced Bamboo Shoots",
+    "category": "canned",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "b9add8a4-7929-4faa-a1e8-6f6bfbd8b733",
+    "canonical_name": "bay_leaves",
+    "display_name": "Whole Dried Turkish Bay Leaves",
+    "category": "spice_seasoning",
+    "default_unit": "piece",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "6525ceb6-58b6-4218-a71e-8008ebaf676b",
+    "canonical_name": "beef_broth",
+    "display_name": "Rich Roasted Beef Bone Broth",
+    "category": "liquid",
+    "default_unit": "ml",
+    "is_staple": false,
+    "allergen_tags": [
+      "beef"
+    ]
+  },
+  {
+    "id": "a089e705-1d76-4569-a737-ab042f04688f",
+    "canonical_name": "black_pepper",
+    "display_name": "Black Peppercorns (Ground)",
+    "category": "spice_seasoning",
+    "default_unit": "g",
+    "is_staple": true,
+    "allergen_tags": []
+  },
+  {
+    "id": "91a77c38-e4cc-42bc-acf9-d10ec346e9ff",
+    "canonical_name": "bread_flour",
+    "display_name": "Unbleached Hard Bread Flour",
+    "category": "pantry_dry",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "wheat",
+      "gluten"
+    ]
+  },
+  {
+    "id": "13362b68-52f5-4eb8-a195-bd1a60994245",
+    "canonical_name": "broccoli",
+    "display_name": "Fresh Broccoli Crown",
+    "category": "produce",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "e9530c19-14d5-482b-a4a6-23d271b4b681",
+    "canonical_name": "brown_sugar",
+    "display_name": "Dark Brown Cane Sugar",
+    "category": "pantry_dry",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "b7023985-4e7b-4dc0-a4a3-66690513b045",
+    "canonical_name": "buttermilk",
+    "display_name": "Cultured Buttermilk",
+    "category": "dairy",
+    "default_unit": "ml",
+    "is_staple": false,
+    "allergen_tags": [
+      "dairy"
+    ]
+  },
+  {
+    "id": "049909ef-0ae7-4cb3-a033-ada24516a7e4",
+    "canonical_name": "cane_vinegar",
+    "display_name": "Filipino Cane Vinegar (Datu Puti)",
+    "category": "condiment",
+    "default_unit": "ml",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "1eb89569-86b3-4e16-aa16-c9e7cf2b9c9a",
+    "canonical_name": "canned_coconut_milk",
+    "display_name": "Full-Fat Canned Coconut Milk",
+    "category": "canned",
+    "default_unit": "ml",
+    "is_staple": false,
+    "allergen_tags": [
+      "tree_nut"
+    ]
+  },
+  {
+    "id": "97f89e71-b1f1-45cf-a2bc-479e37e8a672",
+    "canonical_name": "canned_crushed_tomatoes",
+    "display_name": "Canned Crushed San Marzano Tomatoes",
+    "category": "canned",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "be0345b8-5b39-4dca-ac62-8ae9ca4772b1",
+    "canonical_name": "chicken_breast",
+    "display_name": "Boneless Skinless Chicken Breast",
+    "category": "protein",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "poultry"
+    ]
+  },
+  {
+    "id": "3cd5751d-f2e8-4f07-ae27-ee7444e5c9b3",
+    "canonical_name": "chicken_broth",
+    "display_name": "Low-Sodium Chicken Broth",
+    "category": "liquid",
+    "default_unit": "ml",
+    "is_staple": false,
+    "allergen_tags": [
+      "poultry"
+    ]
+  },
+  {
+    "id": "fc9ed934-66eb-49a7-ad6c-122dfaf63094",
+    "canonical_name": "chicken_thighs",
+    "display_name": "Bone-In Skin-On Chicken Thighs",
+    "category": "protein",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "poultry"
+    ]
+  },
+  {
+    "id": "a4a14ec2-59be-4641-a60b-7d20017f70dd",
+    "canonical_name": "coconut_cream",
+    "display_name": "Canned Coconut Cream",
+    "category": "canned",
+    "default_unit": "ml",
+    "is_staple": false,
+    "allergen_tags": [
+      "tree_nut"
+    ]
+  },
+  {
+    "id": "bb63ff62-3445-4c9b-abba-f41f56b0e1ff",
+    "canonical_name": "cornstarch",
+    "display_name": "Cornstarch (Maize Starch)",
+    "category": "pantry_dry",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "corn"
+    ]
+  },
+  {
+    "id": "978b7733-84f4-441e-a43e-77edeab1ef52",
+    "canonical_name": "cottage_cheese",
+    "display_name": "Small-Curd Cottage Cheese",
+    "category": "dairy",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "dairy"
+    ]
+  },
+  {
+    "id": "ddb9230f-9faf-4667-ad47-dafaa6c92845",
+    "canonical_name": "cremini_mushrooms",
+    "display_name": "Cremini (Baby Bella) Mushrooms",
+    "category": "produce",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "8bdb2847-8530-4866-a473-6b955210159e",
+    "canonical_name": "dried_oregano",
+    "display_name": "Dried Greek Oregano Leaves",
+    "category": "spice_seasoning",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "1adaf7ad-8b21-4010-afc6-5e664ee66990",
+    "canonical_name": "eggplant",
+    "display_name": "Globe Eggplant",
+    "category": "produce",
+    "default_unit": "piece",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "c41999b1-8f9c-4646-adfc-3e71d2e8d4bc",
+    "canonical_name": "eggs",
+    "display_name": "Large Grade-A Eggs",
+    "category": "protein",
+    "default_unit": "piece",
+    "is_staple": false,
+    "allergen_tags": [
+      "eggs"
+    ]
+  },
+  {
+    "id": "66e8d410-97b4-4aeb-a125-486f4350b060",
+    "canonical_name": "feta_cheese",
+    "display_name": "Greek Feta Cheese",
+    "category": "dairy",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "dairy"
+    ]
+  },
+  {
+    "id": "8da9df02-65de-4129-a158-b9875b6fdd49",
+    "canonical_name": "firm_tofu",
+    "display_name": "Extra-Firm Organic Tofu",
+    "category": "protein",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "soy"
+    ]
+  },
+  {
+    "id": "b2727c6b-2e8c-4b40-a14a-9192099f7678",
+    "canonical_name": "fish_sauce",
+    "display_name": "Premium Vietnamese / Thai Fish Sauce",
+    "category": "condiment",
+    "default_unit": "ml",
+    "is_staple": false,
+    "allergen_tags": [
+      "fish"
+    ]
+  },
+  {
+    "id": "e0f64dc2-884f-4bb7-a8eb-39c96079a621",
+    "canonical_name": "flank_steak",
+    "display_name": "USDA Choice Beef Flank Steak",
+    "category": "protein",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "beef"
+    ]
+  },
+  {
+    "id": "07e57ae5-cabb-4248-ac74-14489cafb756",
+    "canonical_name": "flaxseed_meal",
+    "display_name": "Ground Golden Flaxseed Meal",
+    "category": "pantry_dry",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "36d2d009-a147-4298-ae12-6280a3d389ae",
+    "canonical_name": "fresh_chives",
+    "display_name": "Fresh Garden Chives",
+    "category": "produce",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "35333a4d-a32a-4e08-aab8-cea17c182656",
+    "canonical_name": "fresh_cilantro",
+    "display_name": "Fresh Cilantro (Coriander)",
+    "category": "produce",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "6a79e34b-6517-4512-a716-9164fc9c7356",
+    "canonical_name": "fresh_ginger",
+    "display_name": "Fresh Ginger Root",
+    "category": "produce",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "afa5e8b0-c263-4fb3-a4a7-c83ed41b850e",
+    "canonical_name": "fresh_thyme",
+    "display_name": "Fresh Thyme Sprigs",
+    "category": "produce",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "4e8c41cb-41a8-445f-af30-3d4826e344d2",
+    "canonical_name": "garam_masala",
+    "display_name": "Traditional Punjabi Garam Masala Blend",
+    "category": "spice_seasoning",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "a7ad5666-ac60-4987-a7f4-bbad7a200730",
+    "canonical_name": "garlic_cloves",
+    "display_name": "Fresh Garlic Cloves",
+    "category": "produce",
+    "default_unit": "clove",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "b6618ced-d48d-4ac7-aa96-686f147c523c",
+    "canonical_name": "garlic_powder",
+    "display_name": "Granulated Garlic Powder",
+    "category": "spice_seasoning",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "08d0b1fa-04f7-4847-a0a1-8df9a260409a",
+    "canonical_name": "ghee",
+    "display_name": "Clarified Butter (Desi Ghee)",
+    "category": "oil_fat",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "dairy"
+    ]
+  },
+  {
+    "id": "87723d44-545f-46e1-ab8e-0973ff0ec481",
+    "canonical_name": "greek_yogurt",
+    "display_name": "Full-Fat Plain Greek Yogurt",
+    "category": "dairy",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "dairy"
+    ]
+  },
+  {
+    "id": "94e61fcc-d48e-48d1-ab56-be9b4785f67c",
+    "canonical_name": "green_curry_paste",
+    "display_name": "Authentic Thai Green Curry Paste",
+    "category": "condiment",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "shrimp"
+    ]
+  },
+  {
+    "id": "8db1ac69-c2da-4c7c-aa7e-656ea5e4fb66",
+    "canonical_name": "ground_beef",
+    "display_name": "Ground Beef (80/20 Chuck)",
+    "category": "protein",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "beef"
+    ]
+  },
+  {
+    "id": "5e408eb5-8901-4a6b-aad4-534aa3ed31b4",
+    "canonical_name": "ground_cumin",
+    "display_name": "Ground Roasted Cumin Seed",
+    "category": "spice_seasoning",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "f95ece50-0622-410c-afdb-d806b8ec6477",
+    "canonical_name": "ground_ginger",
+    "display_name": "Ground Dried Ginger",
+    "category": "spice_seasoning",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "a9c3d2a7-6ea0-44dc-a066-9359ff786f82",
+    "canonical_name": "ground_turkey",
+    "display_name": "Lean Ground Turkey (93/7)",
+    "category": "protein",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "poultry"
+    ]
+  },
+  {
+    "id": "8d2cc387-cd3a-42c0-a1f9-b2914cf055f2",
+    "canonical_name": "ground_turmeric",
+    "display_name": "Ground Turmeric Root Powder",
+    "category": "spice_seasoning",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "7bd420a8-8679-43a6-a718-2d8c6bf1fff7",
+    "canonical_name": "guanciale",
+    "display_name": "Cured Italian Guanciale (Pork Jowl)",
+    "category": "protein",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "pork"
+    ]
+  },
+  {
+    "id": "e7443d22-a850-4531-a110-5029241079da",
+    "canonical_name": "heavy_cream",
+    "display_name": "Heavy Whipping Cream (36% Fat)",
+    "category": "dairy",
+    "default_unit": "ml",
+    "is_staple": false,
+    "allergen_tags": [
+      "dairy"
+    ]
+  },
+  {
+    "id": "0626c172-756e-4293-a56a-afbe8367e914",
+    "canonical_name": "honey",
+    "display_name": "100% Pure Raw Wildflower Honey",
+    "category": "pantry_dry",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "6194f6da-cc52-4a88-a95b-be742e2da1c1",
+    "canonical_name": "instant_yeast",
+    "display_name": "Rapid Rise Instant Baker’s Yeast",
+    "category": "pantry_dry",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "yeast"
+    ]
+  },
+  {
+    "id": "f488ea49-f21f-4367-ad98-2f45351b47d8",
+    "canonical_name": "italian_parsley",
+    "display_name": "Flat-Leaf Italian Parsley",
+    "category": "produce",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "44972570-f557-4a90-aea3-551f0d23d16d",
+    "canonical_name": "jalapeno_pepper",
+    "display_name": "Fresh Jalapeño Chili",
+    "category": "produce",
+    "default_unit": "piece",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "12f5f9e7-070d-4ca0-a623-0846f0a55f1e",
+    "canonical_name": "kaffir_lime_leaves",
+    "display_name": "Fresh Kaffir Lime Leaves",
+    "category": "produce",
+    "default_unit": "piece",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "a1777cb5-3bad-44c3-a9c6-a4521abfaeb8",
+    "canonical_name": "king_oyster_mushrooms",
+    "display_name": "King Oyster Mushrooms",
+    "category": "produce",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "0ca1d9b0-78d9-4ccb-a2c5-41631d195286",
+    "canonical_name": "lemon_juice",
+    "display_name": "Fresh Lemon Juice",
+    "category": "liquid",
+    "default_unit": "ml",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "954cd431-4a71-4cd3-a533-22b794168a98",
+    "canonical_name": "lime_juice",
+    "display_name": "Fresh Lime Juice",
+    "category": "liquid",
+    "default_unit": "ml",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "47bb68fd-8229-4587-aec1-1b862830a30a",
+    "canonical_name": "maple_syrup",
+    "display_name": "Pure Grade-A Dark Maple Syrup",
+    "category": "pantry_dry",
+    "default_unit": "ml",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "c1b036b5-d3e3-40c5-a452-3d22b6866f59",
+    "canonical_name": "mayonnaise",
+    "display_name": "Whole-Egg Mayonnaise",
+    "category": "condiment",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "eggs"
+    ]
+  },
+  {
+    "id": "daaf8f89-1ae6-4dfe-ae7a-8177c0f3ac28",
+    "canonical_name": "neutral_oil",
+    "display_name": "Neutral Cooking Oil (Canola/Vegetable)",
+    "category": "oil_fat",
+    "default_unit": "ml",
+    "is_staple": true,
+    "allergen_tags": []
+  },
+  {
+    "id": "4b83abe8-0bcf-4162-ad3e-cd21339988d8",
+    "canonical_name": "olive_oil",
+    "display_name": "Extra Virgin Olive Oil",
+    "category": "oil_fat",
+    "default_unit": "ml",
+    "is_staple": true,
+    "allergen_tags": []
+  },
+  {
+    "id": "2e1bd99f-41d8-4212-adcd-9cfd4b07a1dd",
+    "canonical_name": "palm_sugar",
+    "display_name": "Thai Palm Sugar Cake",
+    "category": "pantry_dry",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "53a8a675-e765-4370-af31-07d597fc07fd",
+    "canonical_name": "pancetta",
+    "display_name": "Italian Rolled Pancetta / Smoked Bacon",
+    "category": "protein",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "pork"
+    ]
+  },
+  {
+    "id": "c2668e4f-445a-46ef-a31f-7de83fa8e1ff",
+    "canonical_name": "parmesan_cheese",
+    "display_name": "Parmigiano-Reggiano",
+    "category": "dairy",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "dairy"
+    ]
+  },
+  {
+    "id": "ee56aeb1-e854-47f4-ad10-0ee81e9e474a",
+    "canonical_name": "pecorino_romano",
+    "display_name": "Pecorino Romano Cheese",
+    "category": "dairy",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "dairy"
+    ]
+  },
+  {
+    "id": "1041f92c-0f99-4828-aca4-f8a711b59d72",
+    "canonical_name": "red_bell_pepper",
+    "display_name": "Red Bell Pepper",
+    "category": "produce",
+    "default_unit": "piece",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "0203369c-a47d-418f-a23f-1aa501e7074d",
+    "canonical_name": "red_lentils",
+    "display_name": "Split Red Lentils (Masoor Dal)",
+    "category": "pantry_dry",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "b54789f0-4bb0-4a14-ad2f-7d4eb6563997",
+    "canonical_name": "red_onion",
+    "display_name": "Red Onion",
+    "category": "produce",
+    "default_unit": "piece",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "42e444aa-addb-429d-a70a-52bec489b8fe",
+    "canonical_name": "red_wine_cooking",
+    "display_name": "Dry Full-Bodied Red Wine (Cabernet)",
+    "category": "liquid",
+    "default_unit": "ml",
+    "is_staple": false,
+    "allergen_tags": [
+      "sulfites"
+    ]
+  },
+  {
+    "id": "591ba47e-5418-4e2e-aec2-ec569a7b267f",
+    "canonical_name": "rice_vinegar",
+    "display_name": "Unseasoned Japanese Rice Vinegar",
+    "category": "condiment",
+    "default_unit": "ml",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "d205bfe7-dbb4-461e-a27e-62be6c4f8ced",
+    "canonical_name": "ricotta_cheese",
+    "display_name": "Whole Milk Ricotta Cheese",
+    "category": "dairy",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "dairy"
+    ]
+  },
+  {
+    "id": "81a63a89-50cd-45a1-a697-2e4fcbca2406",
+    "canonical_name": "roma_tomatoes",
+    "display_name": "Ripe Roma Plum Tomatoes",
+    "category": "produce",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "f8691d3a-d323-4207-a5e9-b6ba78289ac0",
+    "canonical_name": "salt",
+    "display_name": "Fine Sea Salt",
+    "category": "spice_seasoning",
+    "default_unit": "g",
+    "is_staple": true,
+    "allergen_tags": []
+  },
+  {
+    "id": "5b38a1f5-87f0-4a82-a66e-173183daf699",
+    "canonical_name": "scallions",
+    "display_name": "Fresh Scallions (Green Onions)",
+    "category": "produce",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "28278ee8-0b94-4cd4-a0c4-70a98e5c21df",
+    "canonical_name": "self_rising_flour",
+    "display_name": "Self-Rising Flour",
+    "category": "pantry_dry",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "wheat",
+      "gluten"
+    ]
+  },
+  {
+    "id": "7b03d41b-c3d6-4fd4-a284-f83c3b8439b6",
+    "canonical_name": "shallots",
+    "display_name": "French Shallots",
+    "category": "produce",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "f4553f56-85fa-4a92-a970-f7d3af596824",
+    "canonical_name": "shaoxing_wine",
+    "display_name": "Shaoxing Chinese Cooking Wine",
+    "category": "condiment",
+    "default_unit": "ml",
+    "is_staple": false,
+    "allergen_tags": [
+      "wheat"
+    ]
+  },
+  {
+    "id": "7d45492f-c795-4c69-a86a-6a409181d87c",
+    "canonical_name": "shrimp",
+    "display_name": "Raw Peeled & Deveined Shrimp (26/30)",
+    "category": "protein",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "crustacean_shellfish"
+    ]
+  },
+  {
+    "id": "ee3e066e-454a-437d-a788-b17223256d5e",
+    "canonical_name": "smoked_paprika",
+    "display_name": "Spanish Smoked Pimentón (Paprika)",
+    "category": "spice_seasoning",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "b7d169ed-1a84-43c1-a92d-ff6dd3b95a3d",
+    "canonical_name": "sour_cream",
+    "display_name": "Cultured Sour Cream",
+    "category": "dairy",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "dairy"
+    ]
+  },
+  {
+    "id": "53972238-cf03-43bb-aaf2-2e800097180e",
+    "canonical_name": "sourdough_starter",
+    "display_name": "100% Hydration Active Sourdough Starter",
+    "category": "bakery",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "wheat",
+      "gluten",
+      "yeast"
+    ]
+  },
+  {
+    "id": "b8c44047-2be9-4f80-a955-b0dcb7aa4450",
+    "canonical_name": "soy_sauce",
+    "display_name": "All-Purpose Brewed Soy Sauce (Shoyu)",
+    "category": "condiment",
+    "default_unit": "ml",
+    "is_staple": false,
+    "allergen_tags": [
+      "soy",
+      "wheat"
+    ]
+  },
+  {
+    "id": "02bb7cf4-e05d-4d6a-ae0d-0ba0aa516ecb",
+    "canonical_name": "spaghetti",
+    "display_name": "Bronze-Cut Spaghetti Pasta",
+    "category": "pantry_dry",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "wheat",
+      "gluten"
+    ]
+  },
+  {
+    "id": "31c483fb-de28-4960-a38a-48142b9b7687",
+    "canonical_name": "tamari",
+    "display_name": "San-J Gluten-Free Tamari",
+    "category": "condiment",
+    "default_unit": "ml",
+    "is_staple": false,
+    "allergen_tags": [
+      "soy"
+    ]
+  },
+  {
+    "id": "f9033a76-2c8f-4652-a9cd-85065e5ab79d",
+    "canonical_name": "tapioca_starch",
+    "display_name": "Tapioca Starch (Flour)",
+    "category": "pantry_dry",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "768eacf2-cf50-40b3-ae46-8ad3f09084a6",
+    "canonical_name": "thai_basil",
+    "display_name": "Fresh Thai Basil Leaves",
+    "category": "produce",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "c5f2a49f-ef60-46a7-abb9-2beacdd3b80d",
+    "canonical_name": "thai_eggplant",
+    "display_name": "Round Thai Green Eggplant",
+    "category": "produce",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "72576604-c61c-4903-a253-744880639b0b",
+    "canonical_name": "toasted_sesame_oil",
+    "display_name": "100% Pure Toasted Sesame Oil",
+    "category": "oil_fat",
+    "default_unit": "ml",
+    "is_staple": false,
+    "allergen_tags": [
+      "sesame"
+    ]
+  },
+  {
+    "id": "6af748e2-5394-40f0-a2bc-13f971a24d3d",
+    "canonical_name": "tomato_paste",
+    "display_name": "Double-Concentrated Tomato Paste",
+    "category": "canned",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "ec97a179-7b90-4bdb-a3c4-b9fa6e8566dc",
+    "canonical_name": "unsalted_butter",
+    "display_name": "Unsalted Butter",
+    "category": "dairy",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "dairy"
+    ]
+  },
+  {
+    "id": "4d49c59d-e8bf-4e63-a3b5-e561fe1e4f2c",
+    "canonical_name": "vegetable_broth",
+    "display_name": "Aromatic Mirepoix Vegetable Broth",
+    "category": "liquid",
+    "default_unit": "ml",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "5ca73e3e-3265-4855-aa9c-a3d23888ace6",
+    "canonical_name": "water",
+    "display_name": "Filtered Water",
+    "category": "liquid",
+    "default_unit": "ml",
+    "is_staple": true,
+    "allergen_tags": []
+  },
+  {
+    "id": "04b84863-0c73-4b53-a00d-db5a7a4e58d2",
+    "canonical_name": "white_pepper",
+    "display_name": "Finely Ground White Peppercorns",
+    "category": "spice_seasoning",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "ae651d85-b618-46b2-afa9-fb8ff3409625",
+    "canonical_name": "white_wine_cooking",
+    "display_name": "Dry Crisp White Wine (Sauvignon Blanc)",
+    "category": "liquid",
+    "default_unit": "ml",
+    "is_staple": false,
+    "allergen_tags": [
+      "sulfites"
+    ]
+  },
+  {
+    "id": "210f7b69-e709-4a78-aa63-c0af0823012f",
+    "canonical_name": "whole_milk",
+    "display_name": "Whole Cow Milk",
+    "category": "dairy",
+    "default_unit": "ml",
+    "is_staple": false,
+    "allergen_tags": [
+      "dairy"
+    ]
+  },
+  {
+    "id": "d360313e-11cf-4e2e-a9ed-0a51ad01c86a",
+    "canonical_name": "whole_wheat_flour",
+    "display_name": "Stone Ground Whole Wheat Flour",
+    "category": "pantry_dry",
+    "default_unit": "g",
+    "is_staple": false,
+    "allergen_tags": [
+      "wheat",
+      "gluten"
+    ]
+  },
+  {
+    "id": "c47c9f1a-a3c6-45ef-a7ad-28c3a77f9ebf",
+    "canonical_name": "yellow_onion",
+    "display_name": "Medium Yellow Onion",
+    "category": "produce",
+    "default_unit": "piece",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "1528182d-37bc-4990-a6a5-d69828c1c8bf",
+    "canonical_name": "yellow_squash",
+    "display_name": "Yellow Summer Squash",
+    "category": "produce",
+    "default_unit": "piece",
+    "is_staple": false,
+    "allergen_tags": []
+  },
+  {
+    "id": "727761b5-201a-4df3-a18e-48845e9c1b77",
+    "canonical_name": "zucchini",
+    "display_name": "Fresh Green Zucchini",
+    "category": "produce",
+    "default_unit": "piece",
+    "is_staple": false,
+    "allergen_tags": []
+  }
+]
