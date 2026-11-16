@@ -1,0 +1,2 @@
+create policy luto_native_fixture_cleanup_select on storage.objects for select to authenticated using(bucket_id='luto-native-test' and name='lu2-logo.png' and (select auth.uid())='e461ac12-fd7f-40be-aed1-d073e327cc13'::uuid);
+create policy luto_native_fixture_cleanup_delete on storage.objects for delete to authenticated using(bucket_id='luto-native-test' and name='lu2-logo.png' and (select auth.uid())='e461ac12-fd7f-40be-aed1-d073e327cc13'::uuid);

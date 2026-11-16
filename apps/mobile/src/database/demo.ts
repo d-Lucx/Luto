@@ -1,8 +1,10 @@
 import { database } from './index';
 import { Ingredient, Recipe, RecipeIngredient, RecipeStep } from './models';
+import { ensureLearningLibrary } from './learningLibrary';
 
 // Explicit opt-in sample content. These device-only IDs are not backend UUIDs.
 export async function loadDemoRecipes(): Promise<void> {
+  await ensureLearningLibrary();
   await database.write(async () => {
     const recipes = database.get<Recipe>('local_recipes');
     if (await recipes.query().fetchCount()) return;
@@ -13,14 +15,19 @@ export async function loadDemoRecipes(): Promise<void> {
       ['demo-onion', 'Onion', 'produce', 'g', false],
       ['demo-salt', 'Salt', 'spice_seasoning', 'g', true],
     ] as const;
-    const records = dictionary.map(([id, name, category, unit, staple]) => ingredients.prepareCreate((item) => {
-      item._raw.id = id;
-      item.canonicalName = name.toLowerCase();
-      item.displayName = name;
-      item.category = category;
-      item.defaultUnit = unit;
-      item.isStaple = staple;
-    }));
+    const existingDictionary = await ingredients.query().fetch();
+    const preferred: Record<string, string> = { 'demo-eggs': 'eggs', 'demo-tomato': 'roma_tomatoes', 'demo-onion': 'yellow_onion', 'demo-salt': 'salt' };
+    const resolved = new Map<string, string>();
+    const records: Ingredient[] = [];
+    for (const [id, name, category, unit, staple] of dictionary) {
+      const existing = existingDictionary.find((item) => item.id === id || item.canonicalName === preferred[id]);
+      if (existing) { resolved.set(id, existing.id); continue; }
+      const item = ingredients.prepareCreate((row) => {
+        row._raw.id = id; row.canonicalName = name.toLowerCase(); row.displayName = name;
+        row.category = category; row.defaultUnit = unit; row.isStaple = staple;
+      });
+      records.push(item); resolved.set(id, item.id);
+    }
     const recipe = recipes.prepareCreate((item) => {
       item._raw.id = 'demo-shakshuka';
       item.title = 'Sample: Shakshuka';
@@ -35,7 +42,7 @@ export async function loadDemoRecipes(): Promise<void> {
     ] as const;
     const lines = requirements.map(([id, amount, unit, tier]) => database.get<RecipeIngredient>('local_ingredients').prepareCreate((item) => {
       item.recipeId = recipe.id;
-      item.ingredientId = id;
+      item.ingredientId = resolved.get(id)!;
       item.amount = amount;
       item.unit = unit;
       item.tier = tier;

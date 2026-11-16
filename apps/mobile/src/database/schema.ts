@@ -1,8 +1,10 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
+import { localStateTables } from './localStateSchema';
 
 export const schema = appSchema({
-  version: 1,
+  version: 2,
   tables: [
+    ...localStateTables.map((table) => tableSchema(table)),
     tableSchema({ name: 'local_recipes', columns: [
       { name: 'title', type: 'string' },
       { name: 'description', type: 'string' },

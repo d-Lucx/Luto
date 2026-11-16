@@ -17,14 +17,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- 2.1 Auth Schema Mock Stub (for isolated PostgreSQL test environments)
-CREATE SCHEMA IF NOT EXISTS auth;
-CREATE TABLE IF NOT EXISTS auth.users (
-    id UUID PRIMARY KEY,
-    email TEXT,
-    raw_user_meta_data JSONB,
-    created_at TIMESTAMPTZ DEFAULT NOW()
-);
+-- auth.users is managed by Supabase Auth; never create a production mock.
 
 -- 3. Profiles Table (Linked to Supabase Auth)
 CREATE TABLE IF NOT EXISTS profiles (
@@ -50,7 +43,7 @@ CREATE TABLE IF NOT EXISTS ingredients (
     canonical_name VARCHAR(150) UNIQUE NOT NULL,
     display_name VARCHAR(150) NOT NULL,
     category VARCHAR(50) NOT NULL CHECK (category IN (
-        'protein', 'produce', 'dairy', 'pantry_dry', 'canned', 
+        'protein', 'produce', 'dairy', 'pantry_dry', 'canned',
         'bakery', 'spice_seasoning', 'oil_fat', 'condiment', 'liquid'
     )),
     is_staple BOOLEAN DEFAULT FALSE NOT NULL,
@@ -70,7 +63,7 @@ CREATE TABLE IF NOT EXISTS equipment (
     canonical_name VARCHAR(100) UNIQUE NOT NULL,
     display_name VARCHAR(100) NOT NULL,
     category VARCHAR(50) NOT NULL CHECK (category IN (
-        'cookware', 'bakeware', 'knives_cutlery', 'prep_tools', 
+        'cookware', 'bakeware', 'knives_cutlery', 'prep_tools',
         'appliances', 'measuring', 'utensils'
     )),
     is_essential BOOLEAN DEFAULT TRUE NOT NULL,
@@ -87,7 +80,7 @@ CREATE TABLE IF NOT EXISTS techniques_and_skills (
     canonical_slug VARCHAR(100) UNIQUE NOT NULL,
     title VARCHAR(150) NOT NULL,
     category VARCHAR(50) NOT NULL CHECK (category IN (
-        'knife_skills', 'dry_heat', 'moist_heat', 'combination', 
+        'knife_skills', 'dry_heat', 'moist_heat', 'combination',
         'sauces_emulsions', 'baking_pastry', 'prep_finishing'
     )),
     difficulty_level VARCHAR(20) DEFAULT 'beginner' CHECK (difficulty_level IN ('beginner', 'intermediate', 'advanced')),
@@ -270,15 +263,15 @@ CREATE OR REPLACE FUNCTION update_recipe_rating_stats()
 RETURNS TRIGGER AS $$
 BEGIN
     UPDATE recipes
-    SET 
+    SET
         average_rating = COALESCE((
-            SELECT ROUND(AVG(rating)::numeric, 2) 
-            FROM ratings_and_reviews 
+            SELECT ROUND(AVG(rating)::numeric, 2)
+            FROM ratings_and_reviews
             WHERE recipe_id = COALESCE(NEW.recipe_id, OLD.recipe_id)
         ), 0.00),
         ratings_count = (
-            SELECT COUNT(*) 
-            FROM ratings_and_reviews 
+            SELECT COUNT(*)
+            FROM ratings_and_reviews
             WHERE recipe_id = COALESCE(NEW.recipe_id, OLD.recipe_id)
         ),
         updated_at = NOW()
@@ -320,13 +313,13 @@ CREATE POLICY "Users can create their own profile" ON profiles FOR INSERT WITH C
 CREATE POLICY "Users can update their own profile" ON profiles FOR UPDATE USING (auth.uid() = id);
 
 -- Recipes Policies
-CREATE POLICY "Published recipes are viewable by all" ON recipes 
+CREATE POLICY "Published recipes are viewable by all" ON recipes
     FOR SELECT USING (status = 'published' OR auth.uid() = author_id);
-CREATE POLICY "Authors can insert recipes" ON recipes 
+CREATE POLICY "Authors can insert recipes" ON recipes
     FOR INSERT WITH CHECK (auth.role() = 'authenticated' AND auth.uid() = author_id);
-CREATE POLICY "Authors can update their own recipes" ON recipes 
+CREATE POLICY "Authors can update their own recipes" ON recipes
     FOR UPDATE USING (auth.uid() = author_id);
-CREATE POLICY "Authors can delete draft recipes" ON recipes 
+CREATE POLICY "Authors can delete draft recipes" ON recipes
     FOR DELETE USING (auth.uid() = author_id AND status = 'draft');
 
 -- Recipe Steps, Ingredients, Equipment Requirements
@@ -338,8 +331,8 @@ CREATE POLICY "Authors manage recipe steps" ON recipe_steps FOR ALL USING (
 CREATE POLICY "Public read recipe step techniques" ON recipe_step_techniques FOR SELECT USING (true);
 CREATE POLICY "Authors manage recipe step techniques" ON recipe_step_techniques FOR ALL USING (
     EXISTS (
-        SELECT 1 FROM recipe_steps 
-        JOIN recipes ON recipes.id = recipe_steps.recipe_id 
+        SELECT 1 FROM recipe_steps
+        JOIN recipes ON recipes.id = recipe_steps.recipe_id
         WHERE recipe_steps.id = recipe_step_techniques.recipe_step_id AND recipes.author_id = auth.uid()
     )
 );
@@ -366,9 +359,9 @@ CREATE POLICY "Saved recipes isolated to owner all" ON saved_recipes FOR ALL USI
 
 -- Reviews
 CREATE POLICY "Public read reviews" ON ratings_and_reviews FOR SELECT USING (true);
-CREATE POLICY "Authenticated users can create reviews" ON ratings_and_reviews FOR INSERT 
+CREATE POLICY "Authenticated users can create reviews" ON ratings_and_reviews FOR INSERT
     WITH CHECK (auth.role() = 'authenticated' AND auth.uid() = user_id);
-CREATE POLICY "Users can update their own reviews" ON ratings_and_reviews FOR UPDATE 
+CREATE POLICY "Users can update their own reviews" ON ratings_and_reviews FOR UPDATE
     USING (auth.uid() = user_id);
-CREATE POLICY "Users can delete their own reviews" ON ratings_and_reviews FOR DELETE 
+CREATE POLICY "Users can delete their own reviews" ON ratings_and_reviews FOR DELETE
     USING (auth.uid() = user_id);

@@ -86,4 +86,25 @@ export class Equipment extends Model {
   @text('icon_name') iconName!: string;
 }
 
-export const modelClasses = [Recipe, RecipeStep, RecipeIngredient, Ingredient, UserPantry, Technique, Equipment];
+export class CookingSessionRecord extends Model {
+  static table = 'cooking_sessions';
+  @field('recipe_id') recipeId!: string;
+  @text('status') status!: 'active' | 'completed' | 'undone';
+  @field('payload') payload!: string;
+  @field('updated_at') updatedAt!: number;
+}
+
+export class CookbookEntry extends Model {
+  static table = 'cookbook_entries';
+  @field('recipe_id') recipeId!: string;
+  @field('saved') saved!: boolean;
+  @field('manifest') manifest!: string;
+  @field('updated_at') updatedAt!: number;
+}
+
+export class LocalDocument extends Model {
+  static table = 'local_documents';
+  @text('key') key!: string;
+  @field('payload') payload!: string;
+}
+export const modelClasses = [Recipe, RecipeStep, RecipeIngredient, Ingredient, UserPantry, Technique, Equipment, CookingSessionRecord, CookbookEntry, LocalDocument];

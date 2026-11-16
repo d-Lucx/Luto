@@ -4,11 +4,19 @@
     "slug": "luto",
     "scheme": "luto",
     "version": "0.1.0",
+    "icon": "./assets/brand/lu2-app-icon.png",
     "orientation": "portrait",
     "jsEngine": "hermes",
     "newArchEnabled": false,
     "ios": { "bundleIdentifier": "com.luto.app", "supportsTablet": true },
-    "android": { "package": "com.luto.app" },
-    "plugins": ["expo-router", "./plugins/withWatermelonDB.cjs"]
+    "android": {
+      "package": "com.luto.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/brand/lu2-adaptive-foreground.png",
+        "backgroundColor": "#F7F1E7"
+      },
+      "permissions": ["android.permission.SCHEDULE_EXACT_ALARM"]
+    },
+    "plugins": ["expo-router", "expo-notifications", "expo-secure-store", "expo-video", "./plugins/withWatermelonDB.cjs"]
   }
 }

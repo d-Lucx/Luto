@@ -1,19 +1,7 @@
-// ==============================================================================
-// LUTO (Logo: Lu2) — "Cooked It!" Completion & Pantry Deduction Modal
-// Target: Post-Cooking Verified Review & Automatic Fridge Inventory Update
-// ==============================================================================
-
-import React, { useState } from 'react';
-import {
-  Modal,
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  ScrollView,
-  TextInput,
-  ActivityIndicator,
-} from 'react-native';
+import { useRef, useState } from 'react';
+import { ActivityIndicator, Modal, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { colors, headingFont } from '../theme';
 
 export interface CookedIngredient {
   ingredientId: string;
@@ -28,287 +16,100 @@ interface CookedItModalProps {
   durationMinutes: number;
   ingredients: CookedIngredient[];
   onClose: () => void;
-  onConfirm: (payload: {
-    deductIngredientIds: string[];
-    rating: number;
-    reviewText: string;
-  }) => Promise<void>;
+  onConfirm: (payload: { deductIngredientIds: string[] }) => Promise<void>;
 }
 
-export function CookedItModal({
-  visible,
-  recipeTitle,
-  durationMinutes,
-  ingredients,
-  onClose,
-  onConfirm,
-}: CookedItModalProps) {
-  // By default, select all ingredients for deduction
-  const [selectedIds, setSelectedIds] = useState<Set<string>>(
-    () => new Set(ingredients.map((i) => i.ingredientId))
-  );
-  const [rating, setRating] = useState<number>(5);
-  const [reviewText, setReviewText] = useState<string>('');
-  const [submitting, setSubmitting] = useState<boolean>(false);
+export function CookedItModal({ visible, recipeTitle, durationMinutes, ingredients, onClose, onConfirm }: CookedItModalProps) {
+  const { height: windowHeight } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
+  const modalHeight = Math.max(1, Math.min(windowHeight * 0.85, windowHeight - insets.top - insets.bottom - 40));
+  const [selectedIds, setSelectedIds] = useState(() => new Set(ingredients.map((item) => item.ingredientId)));
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  const saving = useRef(false);
 
-  const toggleIngredient = (id: string) => {
-    setSelectedIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+  function toggle(id: string) {
+    setSelectedIds((previous) => {
+      const next = new Set(previous);
+      if (next.has(id)) next.delete(id); else next.add(id);
       return next;
     });
-  };
+  }
 
-  const handleComplete = async () => {
+  async function finish(ids: string[]) {
+    if (saving.current) return;
+    saving.current = true;
     setSubmitting(true);
+    setError('');
     try {
-      await onConfirm({
-        deductIngredientIds: Array.from(selectedIds),
-        rating,
-        reviewText,
-      });
+      await onConfirm({ deductIngredientIds: ids });
       onClose();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Your pantry could not be updated. Please try again.');
     } finally {
+      saving.current = false;
       setSubmitting(false);
     }
-  };
+  }
 
-  return (
-    <Modal visible={visible} animationType="slide" transparent>
-      <View style={styles.overlay}>
-        <View style={styles.card}>
-          <Text style={styles.badge}>🎉 Cook Completed!</Text>
-          <Text style={styles.title}>{recipeTitle}</Text>
-          <Text style={styles.subtitle}>
-            Finished in {durationMinutes} mins · Verified "Cooked It!"
-          </Text>
-
-          <ScrollView style={styles.scrollArea}>
-            <Text style={styles.sectionHeading}>Rate this dish</Text>
-            <View style={styles.starRow}>
-              {[1, 2, 3, 4, 5].map((star) => (
-                <Pressable
-                  key={star}
-                  onPress={() => setRating(star)}
-                  style={styles.starButton}
-                >
-                  <Text style={[styles.starText, rating >= star && styles.starActive]}>
-                    ★
-                  </Text>
-                </Pressable>
-              ))}
+  return <Modal visible={visible} animationType="slide" transparent onRequestClose={() => { if (!saving.current) onClose(); }}>
+    <SafeAreaView style={styles.overlay} edges={['top', 'bottom']}>
+      <View style={[styles.card, { height: modalHeight }]} accessibilityViewIsModal>
+        <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
+          <Text style={styles.eyebrow}>COOKED IT!</Text>
+          <Text accessibilityRole="header" style={styles.title}>{recipeTitle}</Text>
+          <Text style={styles.body}>About {durationMinutes} {durationMinutes === 1 ? 'minute' : 'minutes'} in your kitchen.</Text>
+          <Text accessibilityRole="header" style={styles.heading}>Update your pantry</Text>
+          <Text style={styles.body}>Keep checked only the ingredients you used from your pantry. Uncheck anything you replaced or did not track.</Text>
+          {ingredients.map((item, index) => <Pressable key={`${item.ingredientId}-${index}`}
+            accessibilityRole="checkbox" accessibilityState={{ checked: selectedIds.has(item.ingredientId), disabled: submitting }}
+            accessibilityLabel={`${item.name}, ${item.amount} ${item.unit}`} disabled={submitting}
+            onPress={() => toggle(item.ingredientId)}
+            style={({ pressed }) => [styles.ingredient, selectedIds.has(item.ingredientId) && styles.selected, pressed && styles.pressed]}>
+            <Text style={styles.check} accessible={false}>{selectedIds.has(item.ingredientId) ? '✓' : '○'}</Text>
+            <View style={styles.ingredientText}>
+              <Text style={styles.body}>{item.name}</Text>
+              <Text style={styles.muted}>{item.amount} {item.unit}</Text>
             </View>
-
-            <TextInput
-              style={styles.reviewInput}
-              placeholder="Add personal notes, pro tips, or tweaks..."
-              placeholderTextColor="#8a9a86"
-              value={reviewText}
-              onChangeText={setReviewText}
-              multiline
-              numberOfLines={3}
-            />
-
-            <Text style={styles.sectionHeading}>
-              Deduct ingredients from your fridge?
-            </Text>
-            <Text style={styles.caption}>
-              Uncheck anything you didn't use or swapped out:
-            </Text>
-
-            {ingredients.map((item) => {
-              const isChecked = selectedIds.has(item.ingredientId);
-              return (
-                <Pressable
-                  key={item.ingredientId}
-                  style={[styles.ingredientRow, isChecked && styles.ingredientRowSelected]}
-                  onPress={() => toggleIngredient(item.ingredientId)}
-                >
-                  <View style={[styles.checkbox, isChecked && styles.checkboxActive]}>
-                    {isChecked && <Text style={styles.checkmark}>✓</Text>}
-                  </View>
-                  <Text style={styles.ingredientName}>{item.name}</Text>
-                  <Text style={styles.ingredientAmount}>
-                    {item.amount} {item.unit}
-                  </Text>
-                </Pressable>
-              );
-            })}
-          </ScrollView>
-
-          <View style={styles.actionRow}>
-            <Pressable
-              style={styles.cancelButton}
-              onPress={onClose}
-              disabled={submitting}
-            >
-              <Text style={styles.cancelText}>Cancel</Text>
-            </Pressable>
-            <Pressable
-              style={styles.confirmButton}
-              onPress={handleComplete}
-              disabled={submitting}
-            >
-              {submitting ? (
-                <ActivityIndicator color="#fff" />
-              ) : (
-                <Text style={styles.confirmText}>Deduct & Save</Text>
-              )}
-            </Pressable>
-          </View>
-        </View>
+          </Pressable>)}
+          {!!error && <Text accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.error}>{error}</Text>}
+          <Text style={styles.muted}>Your pantry update stays on this device. Community reviews are available from a published recipe’s page.</Text>
+          <Pressable accessibilityRole="button" disabled={submitting} accessibilityState={{ disabled: submitting }}
+            onPress={() => void finish([...selectedIds])} style={({ pressed }) => [styles.button, pressed && styles.pressed]}>
+            {submitting ? <ActivityIndicator color={colors.onAccent} /> : <Text style={styles.buttonText}>Confirm and finish</Text>}
+          </Pressable>
+          <Pressable accessibilityRole="button" disabled={submitting} accessibilityState={{ disabled: submitting }}
+            onPress={() => void finish([])} style={({ pressed }) => [styles.secondary, pressed && styles.pressed]}>
+            <Text style={styles.secondaryText}>Finish without deduction</Text>
+          </Pressable>
+          <Pressable accessibilityRole="button" disabled={submitting} accessibilityState={{ disabled: submitting }}
+            onPress={onClose} style={({ pressed }) => [styles.secondary, pressed && styles.pressed]}>
+            <Text style={styles.secondaryText}>Back to cooking</Text>
+          </Pressable>
+        </ScrollView>
       </View>
-    </Modal>
-  );
+    </SafeAreaView>
+  </Modal>;
 }
 
 const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.65)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  card: {
-    width: '100%',
-    maxHeight: '85%',
-    backgroundColor: '#1b2a21',
-    borderRadius: 20,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: '#2e4938',
-  },
-  badge: {
-    color: '#84e1bc',
-    fontSize: 14,
-    fontWeight: '700',
-    textTransform: 'uppercase',
-    letterSpacing: 1,
-  },
-  title: {
-    color: '#f3f4f6',
-    fontSize: 22,
-    fontWeight: '800',
-    marginTop: 4,
-  },
-  subtitle: {
-    color: '#9ca3af',
-    fontSize: 13,
-    marginBottom: 16,
-  },
-  scrollArea: {
-    marginVertical: 8,
-  },
-  sectionHeading: {
-    color: '#f9fafb',
-    fontSize: 15,
-    fontWeight: '700',
-    marginTop: 12,
-    marginBottom: 6,
-  },
-  caption: {
-    color: '#9ca3af',
-    fontSize: 12,
-    marginBottom: 8,
-  },
-  starRow: {
-    flexDirection: 'row',
-    marginBottom: 12,
-    gap: 8,
-  },
-  starButton: {
-    padding: 4,
-  },
-  starText: {
-    fontSize: 32,
-    color: '#4b5563',
-  },
-  starActive: {
-    color: '#fbbf24',
-  },
-  reviewInput: {
-    backgroundColor: '#111d16',
-    borderColor: '#2e4938',
-    borderWidth: 1,
-    borderRadius: 10,
-    padding: 10,
-    color: '#f3f4f6',
-    fontSize: 14,
-    minHeight: 60,
-    textAlignVertical: 'top',
-  },
-  ingredientRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    backgroundColor: '#111d16',
-    marginBottom: 6,
-    borderWidth: 1,
-    borderColor: '#1e3325',
-  },
-  ingredientRowSelected: {
-    borderColor: '#38a169',
-    backgroundColor: '#15291d',
-  },
-  checkbox: {
-    width: 22,
-    height: 22,
-    borderRadius: 6,
-    borderWidth: 2,
-    borderColor: '#4b5563',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 10,
-  },
-  checkboxActive: {
-    backgroundColor: '#38a169',
-    borderColor: '#38a169',
-  },
-  checkmark: {
-    color: '#ffffff',
-    fontSize: 13,
-    fontWeight: '800',
-  },
-  ingredientName: {
-    flex: 1,
-    color: '#e5e7eb',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  ingredientAmount: {
-    color: '#9ca3af',
-    fontSize: 13,
-  },
-  actionRow: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    gap: 12,
-    marginTop: 16,
-  },
-  cancelButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 18,
-    borderRadius: 10,
-    backgroundColor: '#263b2f',
-  },
-  cancelText: {
-    color: '#d1d5db',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  confirmButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 22,
-    borderRadius: 10,
-    backgroundColor: '#25855a',
-  },
-  confirmText: {
-    color: '#ffffff',
-    fontSize: 14,
-    fontWeight: '700',
-  },
+  overlay: { flex: 1, backgroundColor: 'rgba(30,24,18,0.6)', justifyContent: 'center', padding: 20 },
+  card: { width: '100%', maxWidth: 600, alignSelf: 'center', backgroundColor: colors.surface, borderRadius: 20, overflow: 'hidden' },
+  scroll: { flex: 1 },
+  content: { padding: 24, gap: 16 },
+  eyebrow: { color: colors.accent, fontSize: 13, fontWeight: '700', letterSpacing: 1 },
+  title: { color: colors.ink, fontFamily: headingFont, fontSize: 28 },
+  heading: { color: colors.ink, fontFamily: headingFont, fontSize: 24, marginTop: 8 },
+  body: { color: colors.ink, fontSize: 16, lineHeight: 25 },
+  muted: { color: colors.muted, fontSize: 14, lineHeight: 22 },
+  ingredient: { flexDirection: 'row', minHeight: 56, gap: 12, alignItems: 'center', padding: 12, borderWidth: 1, borderColor: colors.border, borderRadius: 10 },
+  selected: { borderColor: colors.accent, backgroundColor: colors.paper },
+  ingredientText: { flex: 1, gap: 4 },
+  check: { fontSize: 23, color: colors.accent },
+  error: { color: colors.error, fontSize: 16, lineHeight: 25 },
+  button: { minHeight: 52, backgroundColor: colors.accent, padding: 16, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  buttonText: { color: colors.onAccent, fontSize: 16, fontWeight: '700' },
+  secondary: { minHeight: 48, alignItems: 'center', justifyContent: 'center', padding: 12 },
+  secondaryText: { color: colors.accent, fontSize: 16, fontWeight: '700' },
+  pressed: { opacity: 0.75 },
 });
